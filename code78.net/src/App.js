@@ -7,13 +7,13 @@ function App() {
             <header>
                 <h1>code78.net</h1>
                 <nav>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>These</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Links</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Don't</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Do</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Anything</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Useful</a>
-                    <a className='navBtn' href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target='_blank'>Yet</a>
+                    <a className='navBtn' href="#">These</a>
+                    <a className='navBtn' href="#">Links</a>
+                    <a className='navBtn' href="#">Don't</a>
+                    <a className='navBtn' href="#">Do</a>
+                    <a className='navBtn' href="#">Anything</a>
+                    <a className='navBtn' href="#">Useful</a>
+                    <a className='navBtn' href="#">Yet</a>
                 </nav>
             </header>
             <div className="main">
