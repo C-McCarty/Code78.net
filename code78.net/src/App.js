@@ -17,10 +17,15 @@ function App() {
                 <Hero />
                 <div className="main">
                     <Section>
-                        <h2>This is a header2</h2>
+                        <h2>Our Services</h2>
+                    </Section>
+                    <Section>
+                        <h2>About Us</h2>
+                        <p>We're a small team of web developers who build reliable, easy-to-use websites and web apps. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or need help improving what you already have, we’re here to help.</p>
                     </Section>
                 </div>
                 <Footer />
+                <div className="scanLines"></div>
             </div>
         );
     }
@@ -35,6 +40,7 @@ function App() {
                     </Section>
                 </div>
                 <Footer />
+                <div className="scanLines"></div>
             </div>
         );
     }
@@ -45,6 +51,7 @@ function App() {
             <Header setPage={setPage} page={page} />
             <ComingSoon />
             <Footer />
+            <div className="scanLines"></div>
         </div>
     );
 }

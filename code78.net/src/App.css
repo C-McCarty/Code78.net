@@ -15,6 +15,8 @@ body {
 }
 .App {
     min-height: 100vh;
+    position: relative;
+    height: 100%;
 }
 html {
     font-size: 16px;
@@ -24,6 +26,11 @@ html {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Redhat Mono', monospace;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px var(--txt),
+        0 0 3px #E70;
+    animation: breathe 1s ease-in-out infinite;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Kode Mono', monospace;
@@ -38,7 +45,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: 1000;
     background-color: var(--bkg);
     display: flex;
     align-items: center;
@@ -100,6 +107,40 @@ footer * {
 }
 .glow {
     text-shadow:
-        0 0 3px #F90,
-        0 0 5px var(--txt);
+        0 0 3px var(--txt),
+        0 0 5px #E70;
+}
+.scanLines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(17, 17, 17, 0.1),
+        rgba(17, 17, 17, 0.1) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+}
+
+@keyframes breathe {
+    0% {
+        text-shadow:
+            0 0 3px var(--txt),
+            0 0 3px #E70;
+    }
+    50% {
+        text-shadow:
+            0 0 3px var(--txt),
+            0 0 5px #E70;
+    }
+    100% {
+        text-shadow:
+            0 0 3px var(--txt),
+            0 0 3px #E70;
+    }
 }

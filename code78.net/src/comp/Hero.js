@@ -14,7 +14,8 @@ export default function Hero() {
             <div className={c.innerWrap}>
                 {/* Cool stuff goes here */}
                 <div className={c.ctaWrap}>
-                    <button className={c.cta} onClick={CTA}>See More</button>
+                    <button className={c.cta} onClick={CTA}>See More
+                    </button>
                 </div>
             </div>
         </div>

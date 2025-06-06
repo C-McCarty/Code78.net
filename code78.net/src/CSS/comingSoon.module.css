@@ -17,7 +17,7 @@
     justify-content: center;
     align-items: center;
     text-shadow:
-        0 0 7px #FA0,
-        0 0 10px #F90,
-        0 0 21px var(--txt);
+        0 0 7px var(--txt),
+        0 0 10px #E70,
+        0 0 21px #E40;
 }
