@@ -1,27 +1,50 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Header from './comp/Header';
+import Hero from './comp/Hero';
+import Section from './comp/Section';
+import Footer from './comp/Footer';
+import ComingSoon from './comp/ComingSoon';
 
 function App() {
+    const [page, setPage] = useState(0);
+
+    // Main Page
+    if (page === 0) {
+        return (
+            <div className="App">
+                <Header setPage={setPage} page={page} />
+                <Hero />
+                <div className="main">
+                    <Section>
+                        <h2>This is a header2</h2>
+                    </Section>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+    // About page
+    if (page === 1) {
+        return (
+            <div className="App">
+                <Header setPage={setPage} page={page} />
+                <div className="main">
+                    <Section>
+                        <h2>About code78.net</h2>
+                    </Section>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Coming Soon Page
     return (
         <div className="App">
-            <header>
-                <h1>code78.net</h1>
-                <nav>
-                    <a className='navBtn' href="#">These</a>
-                    <a className='navBtn' href="#">Links</a>
-                    <a className='navBtn' href="#">Don't</a>
-                    <a className='navBtn' href="#">Do</a>
-                    <a className='navBtn' href="#">Anything</a>
-                    <a className='navBtn' href="#">Useful</a>
-                    <a className='navBtn' href="#">Yet</a>
-                </nav>
-            </header>
-            <div className="main">
-                <h2>Coming Soon to a code78.net near you!</h2>
-            </div>
-            <footer>
-                <small>Copyright © 2025 Code78.net - All Rights Reserved.</small>
-            </footer>
+            <Header setPage={setPage} page={page} />
+            <ComingSoon />
+            <Footer />
         </div>
     );
 }
