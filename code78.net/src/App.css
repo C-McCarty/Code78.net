@@ -1,3 +1,18 @@
+@font-face {
+    font-family: 'Kode Mono';
+    src: url(./media/fonts/Kode_Mono/KodeMono-VariableFont_wght.ttf);
+}
+@font-face {
+    font-family: 'Redhat Mono';
+    src: url(./media/fonts/Red_Hat_Mono/RedHatMono-VariableFont_wght.ttf);
+}
+:root {
+    --bkg: #111;
+    --txt: #F80;
+}
+body {
+    background-color: var(--bkg);
+}
 .App {
     min-height: 100vh;
 }
@@ -7,14 +22,28 @@ html {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Redhat Mono', monospace;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Kode Mono', monospace;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
 }
 header {
     height: 8vh;
-    background-color: #282c34;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: var(--bkg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #fff;
+    color: var(--txt);
     box-sizing: border-box;
 }
 h1 {
@@ -39,7 +68,7 @@ nav {
     cursor: pointer;
     transition: all 0.125s;
     text-decoration: none;
-    color: #fff;
+    color: var(--txt);
 }
 .navBtn:hover {
     backdrop-filter: brightness(150%);
@@ -47,25 +76,14 @@ nav {
 .navBtn:active {
     backdrop-filter: brightness(200%);
 }
-.main {
-    height: 88vh;
-    display: flex;
-    background: #282c34 url(./media/images/underConstruction.png);
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-}
-.main h2 {
-    backdrop-filter: brightness(50%) blur(5px);
-    position: absolute;
+.headerShadow {
+    height: 8vh;
+    position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+    left: 10%;
+    right: 10%;
+    z-index: 9;
+    box-shadow: 0 -70px 100px var(--txt);
 }
 footer {
     height: 4vh;
@@ -73,10 +91,15 @@ footer {
     padding-right: 1vh;
     display: flex;
     align-items: center;
-    background-color: #282c34;
-    color: #fff;
+    background-color: var(--bkg);
+    color: var(--txt);
     justify-content: center;
 }
 footer * {
     text-align: center;
+}
+.glow {
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
 }
