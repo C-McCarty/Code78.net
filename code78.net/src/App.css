@@ -1,5 +1,22 @@
+@font-face {
+    font-family: 'Kode Mono';
+    src: url(./media/fonts/Kode_Mono/KodeMono-VariableFont_wght.ttf);
+}
+@font-face {
+    font-family: 'Redhat Mono';
+    src: url(./media/fonts/Red_Hat_Mono/RedHatMono-VariableFont_wght.ttf);
+}
+:root {
+    --bkg: #111;
+    --txt: #F80;
+}
+body {
+    background-color: var(--bkg);
+}
 .App {
     min-height: 100vh;
+    position: relative;
+    height: 100%;
 }
 html {
     font-size: 16px;
@@ -7,14 +24,39 @@ html {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Redhat Mono', monospace;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px var(--txt),
+        0 0 3px #E70;
+    /* animation: breathe 1s ease-in-out infinite; */
 }
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Kode Mono', monospace;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
+}
+h1 { font-size: 3.5rem; }
+h2 { font-size: 3rem; }
+h3 { font-size: 2.5rem; }
+h4 { font-size: 2rem; }
+h5 { font-size: 1.5rem; }
+h6 { font-size: 1rem; }
 header {
     height: 8vh;
-    background-color: #282c34;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--bkg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #fff;
+    color: var(--txt);
     box-sizing: border-box;
 }
 h1 {
@@ -39,7 +81,7 @@ nav {
     cursor: pointer;
     transition: all 0.125s;
     text-decoration: none;
-    color: #fff;
+    color: var(--txt);
 }
 .navBtn:hover {
     backdrop-filter: brightness(150%);
@@ -47,25 +89,14 @@ nav {
 .navBtn:active {
     backdrop-filter: brightness(200%);
 }
-.main {
-    height: 88vh;
-    display: flex;
-    background: #282c34 url(./media/images/underConstruction.png);
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-}
-.main h2 {
-    backdrop-filter: brightness(50%) blur(5px);
-    position: absolute;
+.headerShadow {
+    height: 8vh;
+    position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+    left: 10%;
+    right: 10%;
+    z-index: 9;
+    box-shadow: 0 -70px 100px var(--txt);
 }
 footer {
     height: 4vh;
@@ -73,10 +104,101 @@ footer {
     padding-right: 1vh;
     display: flex;
     align-items: center;
-    background-color: #282c34;
-    color: #fff;
+    background-color: var(--bkg);
+    color: var(--txt);
     justify-content: center;
 }
 footer * {
     text-align: center;
+}
+.glow {
+    text-shadow:
+        0 0 3px var(--txt),
+        0 0 5px #E70;
+}
+.scanLines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(17, 17, 17, 0.1),
+        rgba(17, 17, 17, 0.1) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+}
+canvas {
+    width: 25%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+canvas:nth-of-type(2) {left: 25%;}
+canvas:nth-of-type(3) {left: 50%;}
+canvas:nth-of-type(4) {left: 75%;}
+
+.glitch {
+    position: relative;
+    color: transparent;
+    text-shadow: none;
+    user-select: none;
+}
+.glitch::before {
+    content: attr(data-glitch);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: right;
+    height: 100%;
+    user-select: none;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
+    clip-path: inset(50% 0 0 0);
+}
+.glitch::after {
+    content: attr(data-glitch);
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: right;
+    animation: glitch;
+    height: 100%;
+    user-select: none;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
+    clip-path: inset(0 0 50% 0);
+}
+h1.glitch::after {
+    animation-delay: 0.1s;
+}
+@keyframes glitch {
+    0%, 69% {
+        left: 0;
+        right: 0;
+    }
+    70%, 80% {
+        left: 10px;
+        right: -10px;
+    }
+    81%, 89% {
+        left: 0;
+        right: 0;
+    }
+    90%, 100% {
+        left: -10px;
+        right: 10px;
+    }
 }
