@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-export default function CircuitBkg() {
+export default function CircuitBkg({page}) {
     const canvasRef = useRef();
     const [canvasInit, setCanvasInit] = useState(false);
     let init = false // Del me
@@ -17,7 +17,7 @@ export default function CircuitBkg() {
         const NODE_COLOR_FILLED = "#E70";
         const LINE_WIDTH = 4;
         const LINE_BLOOM = 12
-        const COL_NODE_COUNT = 40
+        const COL_NODE_COUNT = 10
         const DIVIDERS = ((2 * COL_NODE_COUNT) + 1)
         const dpr = window.devicePixelRatio || 1;
         const rect = canvasElement.getBoundingClientRect();
@@ -27,7 +27,7 @@ export default function CircuitBkg() {
         const ctx = canvasElement.getContext('2d');
         
         function coord(n) {
-            return n * 2 * canvasElement.width / DIVIDERS;
+            return ((n * 2) - 0.5) * canvasElement.width / DIVIDERS; // WHY AM I SUBTRACTING 0.5?!!?!
         }
         
         function drawPath(x, y, dx) {
@@ -123,7 +123,7 @@ export default function CircuitBkg() {
         if (canvasRef.current) {
             animate(canvasRef.current);
         }
-    }, []);
+    }, [page]);
 
     return <canvas ref={canvasRef}></canvas>
 }

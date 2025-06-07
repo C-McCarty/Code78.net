@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import c from "../CSS/section.module.css";
 
-export default function Section({children, error404=null}) {
-    const containerRef = useRef(null);
+export default function Section({children, error404=null, secRef}) {
+    const glassRef = useRef(null);
     const [offsetY, setOffsetY] = useState(0);
     const [glitch, setGlitch] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
+            if (glassRef.current) {
+                const rect = glassRef.current.getBoundingClientRect();
                 const scrollTop = window.scrollY || window.pageYOffset;
                 const elementTop = rect.top + scrollTop;
                 const currentScroll = scrollTop;
@@ -42,9 +42,11 @@ export default function Section({children, error404=null}) {
     }, [error404]);
     if (error404) {
         return (
-            <section ref={containerRef} className={c.section}>
-                <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
-                <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
+            <section ref={secRef} className={c.section}>
+                <div className={c.glassWrap} ref={glassRef}>
+                    <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
+                    <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
+                </div>
                 <div className={`${c.innerWrap} ${c.error404}`}>
                     <h2 className="glitch" data-glitch="Error 404">Error 404</h2>
                     <h3 className="glitch" data-glitch="Page Not Found">Page Not Found</h3>
@@ -54,7 +56,7 @@ export default function Section({children, error404=null}) {
         );
     }
     return (
-        <section ref={containerRef} className={c.section}>
+        <section ref={secRef} className={c.section}>
             <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
             <div className={c.bkgGlass} style={{ transform: `translateY(${offsetY/10}px)` }}></div>
             <div className={c.innerWrap}>
