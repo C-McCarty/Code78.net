@@ -5,7 +5,6 @@ import Hero from './comp/Hero';
 import Section from './comp/Section';
 import CircuitBkg from './comp/CircuitBkg';
 import Footer from './comp/Footer';
-import ComingSoon from './comp/ComingSoon';
 
 function App() {
     const [page, setPage] = useState(0);
@@ -35,6 +34,7 @@ function App() {
     if (page === 1) {
         return (
             <div className="App">
+                <CircuitBkg />
                 <Header setPage={setPage} page={page} />
                 <div className="main">
                     <Section>
@@ -47,11 +47,12 @@ function App() {
         );
     }
 
-    // Coming Soon Page
+    // 404 Page
     return (
         <div className="App">
-            <Header setPage={setPage} page={page} />
-            <ComingSoon />
+            <CircuitBkg />
+            <Header setPage={setPage} page={page} glitch={true} />
+            <Section error404={true} />
             <Footer />
             <div className="scanLines"></div>
         </div>

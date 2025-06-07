@@ -29,7 +29,7 @@ export default function CircuitBkg() {
             const y0 = coord(Math.max(y-1,0))
             const x1 = coord(x + 1)
             const y1 = coord(y)
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 6;
             ctx.lineCap = "round";
             ctx.beginPath();
             ctx.moveTo(x0, y0);

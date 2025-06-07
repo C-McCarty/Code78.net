@@ -30,7 +30,7 @@ html {
     text-shadow:
         0 0 3px var(--txt),
         0 0 3px #E70;
-    animation: breathe 1s ease-in-out infinite;
+    /* animation: breathe 1s ease-in-out infinite; */
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Kode Mono', monospace;
@@ -39,6 +39,12 @@ h1, h2, h3, h4, h5, h6 {
         0 0 3px #F90,
         0 0 5px var(--txt);
 }
+h1 { font-size: 3.5rem; }
+h2 { font-size: 3rem; }
+h3 { font-size: 2.5rem; }
+h4 { font-size: 2rem; }
+h5 { font-size: 1.5rem; }
+h6 { font-size: 1rem; }
 header {
     height: 8vh;
     position: fixed;
@@ -126,24 +132,6 @@ footer * {
     pointer-events: none;
     z-index: 100;
 }
-
-@keyframes breathe {
-    0% {
-        text-shadow:
-            0 0 3px var(--txt),
-            0 0 3px #E70;
-    }
-    50% {
-        text-shadow:
-            0 0 3px var(--txt),
-            0 0 5px #E70;
-    }
-    100% {
-        text-shadow:
-            0 0 3px var(--txt),
-            0 0 3px #E70;
-    }
-}
 canvas {
     width: 100%;
     height: 100%;
@@ -153,4 +141,62 @@ canvas {
     right: 0;
     z-index: -1;
     pointer-events: none;
+}
+
+.glitch {
+    position: relative;
+    color: transparent;
+    text-shadow: none;
+    user-select: none;
+}
+.glitch::before {
+    content: attr(data-glitch);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: right;
+    height: 100%;
+    user-select: none;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
+    clip-path: inset(50% 0 0 0);
+}
+.glitch::after {
+    content: attr(data-glitch);
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: right;
+    animation: glitch;
+    height: 100%;
+    user-select: none;
+    color: var(--txt);
+    text-shadow:
+        0 0 3px #F90,
+        0 0 5px var(--txt);
+    clip-path: inset(0 0 50% 0);
+}
+h1.glitch::after {
+    animation-delay: 0.1s;
+}
+@keyframes glitch {
+    0%, 69% {
+        left: 0;
+        right: 0;
+    }
+    70%, 80% {
+        left: 10px;
+        right: -10px;
+    }
+    81%, 89% {
+        left: 0;
+        right: 0;
+    }
+    90%, 100% {
+        left: -10px;
+        right: 10px;
+    }
 }
