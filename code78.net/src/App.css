@@ -144,3 +144,13 @@ footer * {
             0 0 3px #E70;
     }
 }
+canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+}

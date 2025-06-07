@@ -3,6 +3,7 @@ import './App.css';
 import Header from './comp/Header';
 import Hero from './comp/Hero';
 import Section from './comp/Section';
+import CircuitBkg from './comp/CircuitBkg';
 import Footer from './comp/Footer';
 import ComingSoon from './comp/ComingSoon';
 
@@ -13,6 +14,7 @@ function App() {
     if (page === 0) {
         return (
             <div className="App">
+                <CircuitBkg />
                 <Header setPage={setPage} page={page} />
                 <Hero />
                 <div className="main">
