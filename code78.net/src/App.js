@@ -32,14 +32,14 @@ function App() {
             <Header aboutRef={aboutRef} serviceRef={serviceRef} contactRef={contactRef} />
             <div className="main">
                 <Section secRef={aboutRef}>
-                    <h2>Who We Are</h2>
+                    <h2 className='glitch' data-glitch="Who We Are">Who We Are</h2>
                     <p>We're a dedicated team of web developers who build reliable, easy-to-use websites and web apps. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or need help improving what you already have, we’re here to help.</p>
                 </Section>
                 <Section secRef={serviceRef}>
-                    <h2>What We Do</h2>
+                    <h2  className='glitch' data-glitch="What We Do">What We Do</h2>
                 </Section>
                 <Section secRef={contactRef}>
-                    <h2>Get In Touch</h2>
+                    <h2 className='glitch' data-glitch="Get In Touch">Get In Touch</h2>
                     <ContactForm />
                 </Section>
             </div>

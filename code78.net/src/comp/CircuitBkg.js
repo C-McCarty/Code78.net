@@ -28,6 +28,7 @@ export default function CircuitBkg({page}) {
 
         const SEGMENT_SIZE = canvasElement.width / DIVIDERS
         const ROW_NODE_COUNT = Math.ceil(canvasElement.height / SEGMENT_SIZE)
+        const SEGMENT_SCREEN_SIZE = initRect.width / DIVIDERS;
         
         const NODE_L = -1
         const NODE_U = 0
@@ -43,15 +44,14 @@ export default function CircuitBkg({page}) {
             NODE_END.push(colOfNodeEnds)
         }
         const ctx = canvasElement.getContext('2d');
-        ctx.scale(dpr, dpr);
         
         const HIGHEST_ROW_PADDING = 0 // Math.ceil(window.innerHeight * 0.08 / SEGMENT_SIZE)
         function getHighestRow() {
-            return Math.max(Math.ceil(0.5 * window.scrollY / SEGMENT_SIZE) + HIGHEST_ROW_PADDING, 1)
+            return Math.max(Math.ceil(0.5 * window.scrollY / SEGMENT_SCREEN_SIZE) + HIGHEST_ROW_PADDING, 1)
         }
         const LOWEST_ROW_PADDING = 0
         function getLowestRow() {
-               return Math.min(Math.floor(0.5 * (window.scrollY + window.innerHeight) / SEGMENT_SIZE) - LOWEST_ROW_PADDING, ROW_NODE_COUNT)
+               return Math.min(Math.floor(0.5 * (window.scrollY + window.innerHeight) / SEGMENT_SCREEN_SIZE) - LOWEST_ROW_PADDING, ROW_NODE_COUNT)
         }
 
         function coord(n) {
@@ -168,7 +168,6 @@ export default function CircuitBkg({page}) {
                 }
                 NODE_END[xDraw][yDraw] = true
                 while (NODE_DIR[xDraw][yDraw] == NODE_UNSET) {
-                    console.log(xDraw)
                     xArr.push(xDraw)
                     yArr.push(yDraw)
                     dxArr.push(dxDraw)

@@ -47,6 +47,10 @@
     right: 5%;
     bottom: unset;
 }
+.section h2 {
+    position: relative;
+    z-index: 1;
+}
 .section p {
     padding: 3rem;
     position: absolute;
