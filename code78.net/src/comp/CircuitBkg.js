@@ -20,16 +20,44 @@ export default function CircuitBkg({page}) {
         const COL_NODE_COUNT = 10
         const DIVIDERS = ((2 * COL_NODE_COUNT) + 1)
         const dpr = window.devicePixelRatio || 1;
-        const rect = canvasElement.getBoundingClientRect();
-        canvasElement.width = rect.width * dpr;
-        canvasElement.height = rect.height * dpr;
+        const initRect = canvasElement.getBoundingClientRect();
+        canvasElement.width = initRect.width * dpr;
+        canvasElement.height = initRect.height * dpr;
+        canvasElement.style.width = initRect.width + "px";
+        canvasElement.style.height = initRect.height + "px";
+
+        const SEGMENT_SIZE = canvasElement.width / DIVIDERS
+        const ROW_NODE_COUNT = Math.ceil(canvasElement.height / SEGMENT_SIZE)
         
-        const ctx = canvasElement.getContext('2d');
-        
-        function coord(n) {
-            return ((n * 2) - 0.5) * canvasElement.width / DIVIDERS; // WHY AM I SUBTRACTING 0.5?!!?!
+        const NODE_L = -1
+        const NODE_U = 0
+        const NODE_R = 1
+        const NODE_UNSET = 2
+
+        const NODE_DIR = [] // Access with NODE_DIR[x][y]
+        const NODE_END = [] // Access with NODE_DIR[x][y]
+        for (let nodeCol = 0; nodeCol < COL_NODE_COUNT; nodeCol++) {
+            const colOfNodeDirs = Array(ROW_NODE_COUNT).fill(NODE_UNSET)
+            const colOfNodeEnds = Array(ROW_NODE_COUNT).fill(false)
+            NODE_DIR.push(colOfNodeDirs)
+            NODE_END.push(colOfNodeEnds)
         }
+        const ctx = canvasElement.getContext('2d');
+        ctx.scale(dpr, dpr);
         
+        const HIGHEST_ROW_PADDING = 0 // Math.ceil(window.innerHeight * 0.08 / SEGMENT_SIZE)
+        function getHighestRow() {
+            return Math.max(Math.ceil(0.5 * window.scrollY / SEGMENT_SIZE) + HIGHEST_ROW_PADDING, 1)
+        }
+        const LOWEST_ROW_PADDING = 0
+        function getLowestRow() {
+               return Math.min(Math.floor(0.5 * (window.scrollY + window.innerHeight) / SEGMENT_SIZE) - LOWEST_ROW_PADDING, ROW_NODE_COUNT)
+        }
+
+        function coord(n) {
+            return ((n * 2) - 0.5) * SEGMENT_SIZE;
+        }
+
         function drawPath(x, y, dx) {
             const x0 = coord(x + dx + 1)
             const y0 = coord(Math.max(y-1,0))
@@ -45,7 +73,7 @@ export default function CircuitBkg({page}) {
             ctx.lineTo(x1, y1);
             ctx.stroke();
         }
-        function drawNode(x, y) {
+        function drawNode(x, y, forceFill = false) {
             const x0 = coord(x+1)
             const y0 = coord(y)
             ctx.shadowColor = LINE_COLOR
@@ -55,68 +83,134 @@ export default function CircuitBkg({page}) {
             ctx.arc(x0, y0, LINE_WIDTH*2, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
             ctx.fill();
             ctx.fillStyle = NODE_COLOR_EMPTY
-            if (Math.random() < 0.5) {
+            if (forceFill || Math.random() < 0.5) {
                 ctx.fillStyle = NODE_COLOR_FILLED
             }
             ctx.beginPath();
             ctx.arc(x0, y0, LINE_WIDTH, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
             ctx.fill();
-
         }
-        function dxArrGen() {
-            const arr = Array(COL_NODE_COUNT)
-            for (let i = 0; i < COL_NODE_COUNT; i++) {
-                // arr[i] = Math.floor(Math.random() * 3) - 1;
-                const r = Math.random()
-                if (r < 0.2) {
-                    arr[i] = -1
-                } else if (r < 0.4) {
-                    arr[i] = 1
-                } else {
-                    arr[i] = 0
-                }
 
-                if (i == 0) {
-                    arr[i] = Math.floor(Math.random() * 2);
-                    continue;
-                }
-                if (i == COL_NODE_COUNT - 1) {
-                    arr[i] = Math.floor(Math.random() * 2) - 1;
-                }
-                if (arr[i-1] == 1 && arr[i] == -1) {
-                    if (Math.random() < 0.5) {
-                        arr[i-1] = 0;
-                    } else {
-                        arr[i] = 0;
-                    }
+        function isValidEnd(x, y) {
+            if (NODE_END[x] == undefined) {return false}
+            if (NODE_END[x][y]) { return false }
+            if (NODE_DIR[x][y] != NODE_UNSET) {return false}
+            let blockSize = 1
+            let xScanner = x - 1
+            while (xScanner == - 1 || (NODE_END[xScanner] != undefined && NODE_END[xScanner][y])) {
+                blockSize++
+                xScanner--
+            }
+            xScanner = x + 1
+            while (xScanner == COL_NODE_COUNT || (NODE_END[xScanner] != undefined && NODE_END[xScanner][y])) {
+                blockSize++
+                xScanner--
+            }
+            return blockSize < 3
+        }
+
+        const NODE_START = 78
+        function getDx(x, y) {
+            if (y < 1) {return NODE_START}
+            if (NODE_END[x] == undefined) {return NODE_START}
+            const dxPossibilities = []
+            if (x > 0) {
+                if (!NODE_END[x-1][y-1] && NODE_DIR[x-1][y] != NODE_R) {
+                    dxPossibilities.push(-1)
                 }
             }
-            return arr
-        }
-        let j = 0
-        let i = 0
-        let dxs = dxArrGen()
-        function updateAnimation() {
-            // ctx.clearRect(0, 0, canvasElement.width, canvasElement.height); // Clear canvas
-            drawPath(i, j, dxs[i])
-            i++;
-            if (i == COL_NODE_COUNT) {
-                i = 0;
-                let nextDxs = dxArrGen()
-                for (let k = 0; k < COL_NODE_COUNT; k++) {
-                    if (nextDxs[k - 1] != 1 && nextDxs[k] != 0 && nextDxs[k+1] != -1) {
-                        drawNode(k, j)
-                    }
+            if (x < COL_NODE_COUNT - 1) {
+                if (!NODE_END[x+1][y-1] && NODE_DIR[x+1][y] != NODE_L) {
+                    dxPossibilities.push(1)
                 }
-                dxs = nextDxs
-                j++;
             }
-            if (j < 100) {
+            if (!NODE_END[x][y-1]) {
+                dxPossibilities.push(0)
+            }
+            if (dxPossibilities.length == 0) {
+                return NODE_START
+            }
+            return dxPossibilities[Math.floor(Math.random() * dxPossibilities.length)]
+        }
+
+        const xArr = []
+        const yArr = []
+        const dxArr = []
+        let lastFrameTime = 0;
+        const FRAME_DURATION = 1000 / 60
+        function updateAnimation(time) {
+            if ((time - lastFrameTime) < FRAME_DURATION) {
                 requestAnimationFrame(updateAnimation);
+                return
             }
-        }
+            lastFrameTime = time
 
-        updateAnimation();
+            if (xArr.length == 0) {
+                const highestRow = getHighestRow()
+                const lowestRow = getLowestRow()
+                const FIND_NODE_END_ATTEMPTS = 100
+                let xDraw = -1
+                let yDraw = -1
+                let dxDraw = -1
+                for (let _ = 0; _ < FIND_NODE_END_ATTEMPTS; _++) {
+                    const x0 = Math.floor(Math.random() * COL_NODE_COUNT)
+                    const y0 = Math.floor(Math.random() * (lowestRow - highestRow)) + highestRow
+                    if (!isValidEnd(x0, y0)) {continue}
+                    xDraw = x0
+                    yDraw = y0
+                    dxDraw = getDx(x0, y0)
+                    break
+                }
+                if (xDraw == -1) {
+                    requestAnimationFrame(updateAnimation);
+                    return;
+                    // Failed to find new node to begin drawing!
+                }
+                NODE_END[xDraw][yDraw] = true
+                while (NODE_DIR[xDraw][yDraw] == NODE_UNSET) {
+                    console.log(xDraw)
+                    xArr.push(xDraw)
+                    yArr.push(yDraw)
+                    dxArr.push(dxDraw)
+                    NODE_DIR[xDraw][yDraw] = dxDraw
+                    if (dxDraw == NODE_START) {
+                        break
+                    }
+                    yDraw--
+                    xDraw += dxDraw
+                    dxDraw = getDx(xDraw, yDraw)
+                    if (NODE_DIR[xDraw] == undefined) {
+                        throw new Error("here")
+                    }
+                }
+                if (xArr.length == 1) {
+                    xArr.pop()
+                    yArr.pop()
+                    dxArr.pop()
+                    requestAnimationFrame(updateAnimation);
+                    return;
+                    //Don't bother animating super short circuits
+                }
+            }
+            let xNode
+            let yNode
+            let dxNode
+            do {
+                xNode = xArr.pop()
+                yNode = yArr.pop()
+                dxNode = dxArr.pop()
+                if (dxNode == NODE_START) {
+                    drawNode(xNode, yNode, true)
+                } else {
+                    drawPath(xNode, yNode, dxNode)
+                }
+                if (xArr.length == 0) {
+                    drawNode(xNode, yNode)
+                }
+            } while (yNode < getHighestRow())
+            requestAnimationFrame(updateAnimation);
+        }
+        requestAnimationFrame(updateAnimation);
     }
 
     useEffect(() => {
