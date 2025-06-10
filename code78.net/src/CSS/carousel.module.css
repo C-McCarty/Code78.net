@@ -1,0 +1,73 @@
+.carouselWrap {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    bottom: 10%;
+    overflow: hidden;
+}
+.carousel {
+    position: absolute;
+    top: 0;
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    transition: all 1s;
+    transition-timing-function: cubic-bezier(0.25,-0.25,0.25,1.25);
+}
+.carouselItem {
+    background-color: #2E2E2E;
+    box-shadow: 5px 5px 10px #0003;
+    border-radius: 10px;
+    height: 100%;
+    width: 25vw;
+    margin-right: 10vw;
+    display: flex;
+    flex-direction: column;
+}
+.carouselItem h5 {
+    margin: 8px;
+    margin-bottom: 0;
+    margin-left: 20px;
+    padding: 5px;
+    padding-right: 20px;
+    background-color: #0C0C0C;
+    width: fit-content;
+    color: #FFF;
+    text-shadow: 0 0 3px #FFF, 0 0 5px #EEE;
+    border-radius: 10px 10px 0 0;
+}
+.carouselItem p {
+    background-color: #0C0C0C;
+    flex-grow: 1;
+    border-radius: 0 0 10px 10px;
+    padding: 5px;
+}
+
+.left, .right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    transition: all 0.25s;
+}
+.left {
+    right: unset;
+    background-image: url(../media/icons/leftArrow.svg);
+}
+.right {
+    left: unset;
+    background-image: url(../media/icons/rightArrow.svg);
+}
+
+.left:hover {background-position-x: 40%;}
+.right:hover {background-position-x: 60%;}
+.left:active {background-position-x: 35%;}
+.right:active {background-position-x: 65%;}

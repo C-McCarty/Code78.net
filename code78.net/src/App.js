@@ -3,24 +3,51 @@ import './App.css';
 import Header from './comp/Header';
 import Hero from './comp/Hero';
 import Section from './comp/Section';
+import P from './comp/P';
 import ContactForm from './comp/ContactForm';
 import CircuitBkg from './comp/CircuitBkg';
 import Footer from './comp/Footer';
+import Carousel from './comp/Carousel';
 
 function App() {
     const [section, setSection] = useState(0);
     const aboutRef = useRef(null);
     const serviceRef = useRef(null);
     const contactRef = useRef(null);
+    
+    const timeOutRef = useRef(null);
 
     useEffect(() => {
         const glitchedElements = document.querySelectorAll(".glitch");
+        const timeouts = [];
+        const MIN_DELAY = 5000;
+        const MAX_DELAY = 10000;
+        glitchedElements.forEach((el) => {
+            const glitchLoop = () => {
+                const delay = Math.random() * MIN_DELAY + (MAX_DELAY - MIN_DELAY);
 
-        glitchedElements.forEach((el, i) => {
-            const delay = (Math.random() * 2).toFixed(2) + "s";
-            el.style.setProperty("--delay", delay);
+                const timeout = setTimeout(() => {
+                    el.className = "glitch";
+                    const ANIM_CODE = (Math.random() < 0.2 ? 1 : 2);
+                    setTimeout(() => {
+                        el.classList.add(`glitch${ANIM_CODE}`);
+                    }, Math.random() * 1);
+
+                    glitchLoop();
+                }, delay);
+
+                timeouts.push(timeout);
+            };
+
+            glitchLoop();
         });
+
+        return () => {
+            timeouts.forEach(clearTimeout);
+        };
     }, []);
+
+
 
     // Main Page
     return (
@@ -33,10 +60,11 @@ function App() {
             <div className="main">
                 <Section secRef={aboutRef}>
                     <h2 className='glitch' data-glitch="Who We Are">Who We Are</h2>
-                    <p>We're a dedicated team of web developers who build reliable, easy-to-use websites and web apps. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or need help improving what you already have, we’re here to help.</p>
+                    <P content="We're a dedicated team of web developers who build reliable, easy-to-use websites and web apps. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or need help improving what you already have, we’re here to help!" />
                 </Section>
                 <Section secRef={serviceRef}>
                     <h2  className='glitch' data-glitch="What We Do">What We Do</h2>
+                    <Carousel />
                 </Section>
                 <Section secRef={contactRef}>
                     <h2 className='glitch' data-glitch="Get In Touch">Get In Touch</h2>
