@@ -1,0 +1,63 @@
+.formWrap {
+    width: 100%;
+    height: 75%;
+    margin-top: 1rem;
+    background-color: #2E2E2E;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.formWrap > h6 {
+    color: #FFF;
+    text-shadow:
+        0 0 3px #FFF,
+        0 0 5px #EEE;
+    margin: 10px;
+    margin-left: 20px;
+    margin-bottom: 0;
+    background-color: #0C0C0C;
+    width: max-content;
+    padding: 0.5rem;
+    padding-right: 40px;
+    font-size: 0.75rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    display: flex;
+}
+.contactForm {
+    flex-grow: 1;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #0C0C0C;
+}
+.contactForm > div {
+    display: flex;
+    align-items: center;
+}
+.contactForm label {
+    margin-right: 0.5rem;
+}
+.contactForm input,
+.contactForm textarea {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    resize: none;
+    flex-grow: 1;
+}
+.contactForm div:has(textarea) label,
+.contactForm div:has(textarea) textarea {
+    height: 10rem;
+
+}
+.contactForm .select {
+    background-color: transparent;
+    color: var(--txt);
+    border: none;
+}
+.contactForm input:focus,
+.contactForm textarea:focus {
+    background-color: #0C0C0C;
+    outline: none;
+}
