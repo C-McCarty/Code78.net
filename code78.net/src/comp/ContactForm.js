@@ -54,8 +54,8 @@ export default function ContactForm() {
         <div className={c.formWrap}>
             <h6>Contact Form Prompt</h6>
             <form className={c.contactForm} onSubmit={sendEmail}>
-                <p>Windows PowerShell</p>
-                <p>Copyright (C) Microsoft Corporation. All rights reserved.</p>
+                <p>Contact Us Form</p>
+                <p>Copyright (C) Code78.net. All rights reserved.</p>
                 <br />
                 <div>
                     <label htmlFor="name">Your name&gt;</label>
