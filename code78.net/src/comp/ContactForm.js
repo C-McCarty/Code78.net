@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import c from "../CSS/contactForm.module.css";
+import emailjs from "emailjs-com";
 
 export default function ContactForm() {
+    // useState
     const [name, setName] = useState("");
     const handleNameChange = e => setName(e.target.value);
     const [email, setEmail] = useState("");
@@ -25,20 +27,33 @@ export default function ContactForm() {
     }
     const handleNewLineDown = e => {
         console.log(e);
-        if (nameRef.current && e.target === nameRef.current && e.key === "Enter" && lines < 1) { setLines(1); }
-        if (emailRef.current && e.target === emailRef.current && e.key === "Enter" && lines < 2) { setLines(2); }
-        if (subjectRef.current && e.target === subjectRef.current && e.key === "Enter" && lines < 3) { setLines(3); }
+        if (nameRef.current && e.target === nameRef.current && (e.key === "Enter" || e.key === "Tab") && lines < 1) { setLines(1); }
+        if (emailRef.current && e.target === emailRef.current && (e.key === "Enter" || e.key === "Tab") && lines < 2) { setLines(2); }
+        if (subjectRef.current && e.target === subjectRef.current && (e.key === "Enter" || e.key === "Tab") && lines < 3) { setLines(3); }
     }
-
-    const handleSubmit = e => {
+    const sendEmail = e => {
         e.preventDefault();
-        alert('test');
+        emailjs.init("OpSgDZ_LlyD5My5_O");
+        emailjs.send("code78.net-service","contact_code78.net", {
+            name: name,
+            email: email,
+            subject: subject,
+            message: message,
+        }).then((response) => {
+            setName("");
+            setEmail("");
+            setSubject("");
+            setMessage("");
+            alert('Message sent!', response.status, response.text);
+        }).catch((err) => {
+            alert('An error occurred while trying to send your messge. Please try again later.', err.text);
+        });
     }
 
     return (
         <div className={c.formWrap}>
             <h6>Contact Form Prompt</h6>
-            <form className={c.contactForm} onSubmit={handleSubmit}>
+            <form className={c.contactForm} onSubmit={sendEmail}>
                 <p>Windows PowerShell</p>
                 <p>Copyright (C) Microsoft Corporation. All rights reserved.</p>
                 <br />
