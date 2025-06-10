@@ -14,7 +14,7 @@ export default function Header({aboutRef, serviceRef, contactRef}) {
         <>
             <div className="headerShadow"></div>
             <header>
-                <h1 className="glitch" data-glitch="code78.net">code78.net</h1>
+                <h1 className="glitch glitch1" data-glitch="code78.net">code78.net</h1>
                 <nav>
                     <div className='navBtn glow' onClick={()=>scrollToSection(aboutRef)}>About</div>
                     <div className='navBtn glow' onClick={()=>scrollToSection(serviceRef)}>Services</div>

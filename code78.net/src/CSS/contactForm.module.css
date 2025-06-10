@@ -6,7 +6,6 @@
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    overflow: hidden;
 }
 .formWrap > h6 {
     color: #FFF;
@@ -25,11 +24,17 @@
     display: flex;
 }
 .contactForm {
+    position: relative;
     flex-grow: 1;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
     background-color: #0C0C0C;
+    border-radius: 0 0 10px 10px;
+}
+.contactForm > p {
+    padding: 0;
+    font-size: 1rem;
 }
 .contactForm > div {
     display: flex;
@@ -41,23 +46,50 @@
 .contactForm input,
 .contactForm textarea {
     background-color: transparent;
+    box-shadow: none;
     border: none;
     box-shadow: none;
+    -webkit-box-shadow: none;
     resize: none;
     flex-grow: 1;
+    font-size: 1rem;
 }
-.contactForm div:has(textarea) label,
-.contactForm div:has(textarea) textarea {
-    height: 10rem;
-
+/* Due to autofill background being impossible to change, text is set to #111 */
+.contactForm input:autofill,
+.contactForm input:-webkit-autofill {
+    -webkit-text-fill-color: #111;
+    text-shadow: 0 0 3px #111;
 }
-.contactForm .select {
-    background-color: transparent;
-    color: var(--txt);
-    border: none;
+.contactForm textarea {
+    height: 100%;
+}
+.contactForm div:has(textarea) {
+    flex-grow: 1;
+    align-items: start;
 }
 .contactForm input:focus,
 .contactForm textarea:focus {
     background-color: #0C0C0C;
     outline: none;
+}
+.buttonWrap {
+    position: absolute;
+    bottom: -4rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.contactForm button {
+    padding: 2rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 3rem;
+    font-size: 2rem;
+    background-color: var(--txt);
+    color: var(--bkg);
+    border: none;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
 }

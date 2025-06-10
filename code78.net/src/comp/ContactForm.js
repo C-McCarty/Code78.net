@@ -11,38 +11,67 @@ export default function ContactForm() {
     const [message, setMessage] = useState("");
     const handleMessageChange = e => setMessage(e.target.value);
 
+    const [lines, setLines] = useState(0);
+
     const nameRef = useRef(null);
     const emailRef = useRef(null);
     const subjectRef = useRef(null);
     const messageRef = useRef(null);
 
-    useEffect(() => {
-        if (nameRef.current && emailRef.current && subjectRef.current && messageRef.current) {
-            if (name.trim().length === 0 && document.activeElement !== nameRef.current) {
-                console.log('fired');
-            }
-        }
-    }, [name, email, subject, message]);
+    const handleNewLineUp = e => {
+        if (lines === 1 && emailRef.current && e.key === "Enter") { emailRef.current.focus(); }
+        if (lines === 2 && subjectRef.current && e.key === "Enter") { subjectRef.current.focus(); }
+        if (lines === 3 && messageRef.current && e.key === "Enter") { messageRef.current.focus(); }
+    }
+    const handleNewLineDown = e => {
+        console.log(e);
+        if (nameRef.current && e.target === nameRef.current && e.key === "Enter" && lines < 1) { setLines(1); }
+        if (emailRef.current && e.target === emailRef.current && e.key === "Enter" && lines < 2) { setLines(2); }
+        if (subjectRef.current && e.target === subjectRef.current && e.key === "Enter" && lines < 3) { setLines(3); }
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        alert('test');
+    }
 
     return (
         <div className={c.formWrap}>
-            <h6>Contact Us</h6>
-            <form className={c.contactForm}>
+            <h6>Contact Form Prompt</h6>
+            <form className={c.contactForm} onSubmit={handleSubmit}>
+                <p>Windows PowerShell</p>
+                <p>Copyright (C) Microsoft Corporation. All rights reserved.</p>
+                <br />
                 <div>
-                    <label htmlFor="name">Name&gt;</label>
-                    <input ref={nameRef} type="text" name="name" id="name" value={name} onChange={handleNameChange} required />
+                    <label htmlFor="name">Your name&gt;</label>
+                    <input ref={nameRef} type="text" name="name" id="name" value={name} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
                 </div>
+                {lines > 0 ? 
+                <>
                 <div>
                     <label htmlFor="email">Email&gt;</label>
-                    <input ref={emailRef} type="email" name="email" id="email" value={email} onChange={handleEmailChange} required />
+                    <input ref={emailRef} type="email" name="email" id="email" value={email} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
                 </div>
+                {lines > 1 ?
+                <>
                 <div>
                     <label htmlFor="subject">Subject&gt;</label>
-                    <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onChange={handleSubjectChange} required />
+                    <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
                 </div>
+                {lines > 2 ?
+                <>
                 <div>
                     <label htmlFor="message">Message&gt;</label>
                     <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
+                </div>
+                </>
+                : null}
+                </>
+                : null}
+                </>
+                : null}
+                <div className={c.buttonWrap}>
+                    <button>Send</button>
                 </div>
             </form>
         </div>
