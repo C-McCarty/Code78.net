@@ -157,7 +157,6 @@ canvas:nth-of-type(4) {left: 75%;}
     top: 0;
     left: 0;
     width: 100%;
-    text-align: right;
     height: 100%;
     user-select: none;
     color: var(--txt);
@@ -171,8 +170,7 @@ canvas:nth-of-type(4) {left: 75%;}
     position: absolute;
     top: 0;
     left: 0;
-    text-align: right;
-    animation: glitch;
+    animation: glitch 1s var(--delay, 2s) infinite;
     height: 100%;
     user-select: none;
     color: var(--txt);
@@ -181,24 +179,19 @@ canvas:nth-of-type(4) {left: 75%;}
         0 0 5px var(--txt);
     clip-path: inset(0 0 50% 0);
 }
-h1.glitch::after {
-    animation-delay: 0.1s;
-}
 @keyframes glitch {
     0%, 69% {
-        left: 0;
-        right: 0;
+        transform: translate(0);
     }
     70%, 80% {
-        left: 10px;
-        right: -10px;
+        transform: translate(2px, -2px) rotateX(0);
+        filter: hue-rotate(0deg) saturate(100%);
     }
     81%, 89% {
-        left: 0;
-        right: 0;
+        transform: translate(-4px, -4px);
+        filter: hue-rotate(-40deg) saturate(300%);
     }
     90%, 100% {
-        left: -10px;
-        right: 10px;
+        transform: translate(0, 4px) rotateX(0);
     }
 }
