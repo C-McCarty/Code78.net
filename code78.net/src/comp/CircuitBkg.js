@@ -5,6 +5,13 @@ export default function CircuitBkg({page}) {
     const [canvasInit, setCanvasInit] = useState(false);
     let init = false // Del me
 
+    function pseudoRand(n) {
+        n = ((n >> 16) ^ n) * 0x86753099;
+        n = ((n >> 16) ^ n) * 0x78;
+        n = (n >> 16) ^ n;
+        return n & 1;
+    }
+
     const LINE_COLOR = "#F80";
     const NODE_COLOR_EMPTY = "#733D00";
     const NODE_COLOR_FILLED = "#E70";
@@ -26,6 +33,10 @@ export default function CircuitBkg({page}) {
     const xArr = []
     const yArr = []
     const dxArr = []
+    let glitchNodeX = null
+    let glitchNodeY = null
+    let glitchState = 0
+    const glitchableNodes = []
     
     function canvasSetup(canvasElement) {
         const initRect = canvasElement.getBoundingClientRect();
@@ -33,7 +44,6 @@ export default function CircuitBkg({page}) {
         canvasElement.height = initRect.height * dpr;
         lineWidth = canvasElement.width / 120;
         lineBloom = lineWidth * 3
-        console.log(lineWidth, lineBloom)
         segmentSize = canvasElement.width / DIVIDERS
         segmentScreenSize = initRect.width / DIVIDERS;
         rowNodeCount = Math.ceil(canvasElement.height / segmentSize)
@@ -49,6 +59,9 @@ export default function CircuitBkg({page}) {
         xArr.length = 0
         yArr.length = 0
         dxArr.length = 0
+        
+        glitchState = 0
+        glitchableNodes.length = 0
         
         ctx = canvasElement.getContext('2d');
         ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -74,33 +87,46 @@ export default function CircuitBkg({page}) {
         function coord(n) {
             return ((n * 2) - 0.5) * segmentSize;
         }
-        function drawPath(x, y, dx) {
+        function drawPath(x, y, dx, drawBloom = true, drawColor = LINE_COLOR) {
             const x0 = coord(x + dx + 1)
             const y0 = coord(Math.max(y-1,0))
             const x1 = coord(x + 1)
             const y1 = coord(y)
-            ctx.strokeStyle = LINE_COLOR;
+            ctx.strokeStyle = drawColor;
             ctx.lineWidth = lineWidth;
             ctx.lineCap = "round";
-            ctx.shadowColor = LINE_COLOR
-            ctx.shadowBlur = lineBloom;
+            if (drawBloom) {
+                ctx.shadowColor = drawColor
+                ctx.shadowBlur = lineBloom;
+            } else {
+                ctx.shadowBlur = 0;
+            }
             ctx.beginPath();
             ctx.moveTo(x0, y0);
             ctx.lineTo(x1, y1);
             ctx.stroke();
         }
-        function drawNode(x, y, forceFill = false) {
+        function drawNode(x, y, fillColor = null, drawBloom = true, drawColor = LINE_COLOR) {
             const x0 = coord(x+1)
             const y0 = coord(y)
-            ctx.shadowColor = LINE_COLOR
-            ctx.shadowBlur = lineBloom;
-            ctx.fillStyle = LINE_COLOR
+            if (drawBloom) {
+                ctx.shadowColor = drawColor
+                ctx.shadowBlur = lineBloom;
+            } else {
+                ctx.shadowBlur = 0;
+            }
+            ctx.fillStyle = drawColor
             ctx.beginPath();
             ctx.arc(x0, y0, lineWidth*2, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
             ctx.fill();
-            ctx.fillStyle = NODE_COLOR_EMPTY
-            if (forceFill || Math.random() < 0.5) {
-                ctx.fillStyle = NODE_COLOR_FILLED
+            if (fillColor == null) {
+                if (pseudoRand((x * COL_NODE_COUNT)+y) == 1) {
+                    ctx.fillStyle = NODE_COLOR_FILLED
+                } else {
+                    ctx.fillStyle = NODE_COLOR_EMPTY
+                }
+            } else {
+                ctx.fillStyle = fillColor
             }
             ctx.beginPath();
             ctx.arc(x0, y0, lineWidth, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
@@ -157,12 +183,44 @@ export default function CircuitBkg({page}) {
         }
         let lastFrameTime = 0;
         const FRAME_DURATION = 1000 / 60
+        const GLITCH_PROB = 1 / 240
+        const GLITCH_COLOR_ARR = ['#ff8800', '#ff8200', '#ff7c00', '#ff7600', '#ff7000', '#ff6a00', '#ff6400', '#ff5e00', '#ff5800', '#ff5200', '#ff4d00', '#ff4700', '#ff4100', '#ff3b00', '#ff3500', '#ff2f00', '#ff2900', '#ff2300', '#ff1d00', '#ff1700', '#ff1100', '#ff1100', '#ff2f20', '#ff4d40', '#ff6a60', '#ff8880', '#ffa69f', '#ffc4bf', '#ffe1df', '#ffffff', '#ffffff', '#ffe1df', '#ffc4bf', '#ffa69f', '#ff8880', '#ff6a60', '#ff4d40', '#ff2f20', '#ff1100', '#ff1100', '#ff1700', '#ff1d00', '#ff2300', '#ff2900', '#ff2f00', '#ff3500', '#ff3b00', '#ff4100', '#ff4700', '#ff4d00', '#ff5200', '#ff5800', '#ff5e00', '#ff6400', '#ff6a00', '#ff7000', '#ff7600', '#ff7c00', '#ff8200', '#ff8800']
+        
         function updateAnimation(time) {
             if ((time - lastFrameTime) < FRAME_DURATION) {
                 requestAnimationFrame(updateAnimation);
                 return
             }
             lastFrameTime = time
+
+            if (glitchState == 0 ) {
+                if (glitchableNodes.length > 0 && Math.random() < GLITCH_PROB) {
+                    [glitchNodeX, glitchNodeY] = glitchableNodes[Math.floor(Math.random() * glitchableNodes.length)]
+                    glitchState++
+                }
+            } else {
+                let glitchColor = GLITCH_COLOR_ARR[glitchState]
+                let gx = glitchNodeX
+                let gy = glitchNodeY
+                if (NODE_DIR[gx] != undefined) {
+                    while (gy > 1) {
+                        drawPath(gx, gy, NODE_DIR[gx][gy], false, glitchColor)
+                        gx += NODE_DIR[gx][gy]
+                        gy--
+                    }
+                    if (pseudoRand((glitchNodeX * COL_NODE_COUNT)+glitchNodeY) == 1) {
+                        drawNode(glitchNodeX, glitchNodeY, glitchColor, false, glitchColor)
+                    } else {
+                        drawNode(glitchNodeX, glitchNodeY, null, false, glitchColor)
+                    }
+                }
+                glitchState++
+                if (glitchState >= GLITCH_COLOR_ARR.length) {
+                    drawNode(glitchNodeX, glitchNodeY, null, false)
+                    glitchState = 0
+                }
+            }
+
             if (xArr.length == 0) {
                 const highestRow = getHighestRow()
                 const lowestRow = getLowestRow()
@@ -201,14 +259,15 @@ export default function CircuitBkg({page}) {
                     }
                 }
                 //Don't bother animating super short circuits
-                if (xArr.length == 1) {
-                    xArr.pop()
-                    yArr.pop()
-                    dxArr.pop()
+                if (xArr.length <= 1) {
+                    xArr.length = 0
+                    yArr.length = 0
+                    dxArr.length = 0
                     requestAnimationFrame(updateAnimation);
                     return;
                 }
             }
+
             let xNode
             let yNode
             let dxNode
@@ -218,12 +277,13 @@ export default function CircuitBkg({page}) {
                 yNode = yArr.pop()
                 dxNode = dxArr.pop()
                 if (dxNode == NODE_START_ID) {
-                    drawNode(xNode, yNode, true)
+                    drawNode(xNode, yNode, NODE_COLOR_FILLED)
                 } else {
                     drawPath(xNode, yNode, dxNode)
                 }
                 if (xArr.length == 0) {
                     drawNode(xNode, yNode)
+                    glitchableNodes.push([xNode, yNode])
                 }
             } while (yNode < highestRow)
             requestAnimationFrame(updateAnimation);
