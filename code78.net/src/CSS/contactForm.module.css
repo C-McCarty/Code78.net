@@ -140,3 +140,11 @@ button.loading .loading {
     opacity: 25%;
     pointer-events: none;
 }
+
+@media screen and (max-width: 650px) {
+    .formWrap h6 {
+        text-shadow:
+            0 0 3px #FFF8,
+            0 0 3px #EEE8;
+    }
+}
