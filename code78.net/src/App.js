@@ -1,21 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Header from './comp/Header';
-import Hero from './comp/Hero';
 import Section from './comp/Section';
 import P from './comp/P';
 import ContactForm from './comp/ContactForm';
 import CircuitBkg from './comp/CircuitBkg';
 import Footer from './comp/Footer';
 import Carousel from './comp/Carousel';
+import TabUI from './comp/TabUI';
 
 function App() {
     const [section, setSection] = useState(0);
     const aboutRef = useRef(null);
     const serviceRef = useRef(null);
     const contactRef = useRef(null);
-    
-    const timeOutRef = useRef(null);
 
     useEffect(() => {
         const glitchedElements = document.querySelectorAll(".glitch");
@@ -47,8 +45,6 @@ function App() {
         };
     }, []);
 
-
-
     // Main Page
     return (
         <div className="App">
@@ -64,7 +60,9 @@ function App() {
                 </Section>
                 <Section secRef={serviceRef}>
                     <h2  className='glitch' data-glitch="What We Do">What We Do</h2>
+                    {window.innerWidth > 1100 ? 
                     <Carousel />
+                    : <TabUI />}
                 </Section>
                 <Section secRef={contactRef}>
                     <h2 className='glitch' data-glitch="Get In Touch">Get In Touch</h2>
