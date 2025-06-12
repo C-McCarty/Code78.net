@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import c from "../CSS/carousel.module.css";
 import CarouselItem from './CarouselItem';
-import items from "../data/carousel.json";
+import items from "../data/services.json";
 
 export default function Carousel() {
     const [pos, setPos] = useState(1);
