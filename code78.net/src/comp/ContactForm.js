@@ -15,6 +15,7 @@ export default function ContactForm() {
 
     const [lines, setLines] = useState(0);
 
+    const formRef = useRef(null);
     const nameRef = useRef(null);
     const emailRef = useRef(null);
     const subjectRef = useRef(null);
@@ -51,44 +52,46 @@ export default function ContactForm() {
     }
 
     return (
-        <div className={c.formWrap}>
-            <h6>Contact Form Prompt</h6>
-            <form className={c.contactForm} onSubmit={sendEmail}>
-                <p>Contact Us Form</p>
-                <p>Copyright (C) Code78.net. All rights reserved.</p>
-                <br />
-                <div>
-                    <label htmlFor="name">Your name&gt;</label>
-                    <input ref={nameRef} type="text" name="name" id="name" value={name} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
-                </div>
-                {lines > 0 ? 
-                <>
-                <div>
-                    <label htmlFor="email">Email&gt;</label>
-                    <input ref={emailRef} type="email" name="email" id="email" value={email} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
-                </div>
-                {lines > 1 ?
-                <>
-                <div>
-                    <label htmlFor="subject">Subject&gt;</label>
-                    <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
-                </div>
-                {lines > 2 ?
-                <>
-                <div>
-                    <label htmlFor="message">Message&gt;</label>
-                    <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
-                </div>
-                </>
-                : null}
-                </>
-                : null}
-                </>
-                : null}
-                <div className={c.buttonWrap}>
-                    <button>Send</button>
-                </div>
-            </form>
-        </div>
+        <>
+            <div className={c.formWrap}>
+                <h6>Contact Form Prompt</h6>
+                <form className={c.contactForm} onSubmit={sendEmail} ref={formRef}>
+                    <p>Contact Us Form</p>
+                    <p>Copyright (C) Code78.net. All rights reserved.</p>
+                    <br />
+                    <div>
+                        <label htmlFor="name">Your name&gt;</label>
+                        <input ref={nameRef} type="text" name="name" id="name" value={name} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
+                    </div>
+                    {lines > 0 ? 
+                    <>
+                    <div>
+                        <label htmlFor="email">Email&gt;</label>
+                        <input ref={emailRef} type="email" name="email" id="email" value={email} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
+                    </div>
+                    {lines > 1 ?
+                    <>
+                    <div>
+                        <label htmlFor="subject">Subject&gt;</label>
+                        <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
+                    </div>
+                    {lines > 2 ?
+                    <>
+                    <div>
+                        <label htmlFor="message">Message&gt;</label>
+                        <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
+                    </div>
+                    </>
+                    : null}
+                    </>
+                    : null}
+                    </>
+                    : null}
+                </form>
+            </div>
+            <div className={c.buttonWrap}>
+                <button onClick={() => formRef.current.requestSubmit()}>Send</button>
+            </div>
+        </>
     );
 }
