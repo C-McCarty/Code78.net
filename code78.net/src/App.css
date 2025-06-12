@@ -291,9 +291,10 @@ canvas:nth-of-type(4) {left: 75%;}
 @media screen and (max-width: 650px) {
     .glitch:after,
     .glitch::before {
-        text-shadow:
-            0 0 3px #F808,
-            0 0 5px #E708;
+        text-shadow: none;
+    }
+    * {
+        text-shadow: 0 0 1px var(--txt);
     }
     h1 { font-size: 3.5rem; }
     h2 { font-size: 2.5rem; }
