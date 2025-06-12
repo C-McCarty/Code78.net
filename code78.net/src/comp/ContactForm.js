@@ -13,6 +13,8 @@ export default function ContactForm() {
     const [message, setMessage] = useState("");
     const handleMessageChange = e => setMessage(e.target.value);
 
+    const [loading, setLoading] = useState(false);
+
     const [lines, setLines] = useState(0);
 
     const formRef = useRef(null);
@@ -34,21 +36,36 @@ export default function ContactForm() {
     }
     const sendEmail = e => {
         e.preventDefault();
+        setLoading(true);
+        try {
+            if (name.trim().length === 0) throw new Error("Must include a name.");
+            if (email.trim().length === 0 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) throw new Error("Must include an email address.");
+            if (subject.trim().length === 0) throw new Error("Must include a subject.");
+            if (message.trim().length === 0) throw new Error("Must include a message.");
+        } catch (err) {
+            alert('Error: ' + err.message);
+            setLoading(false);
+            return;
+        }
         emailjs.init("OpSgDZ_LlyD5My5_O");
         emailjs.send("code78.net-service","contact_code78.net", {
             name: name,
             email: email,
             subject: subject,
             message: message,
-        }).then((response) => {
+        }).then(response => {
             setName("");
             setEmail("");
             setSubject("");
             setMessage("");
             alert('Message sent!', response.status, response.text);
-        }).catch((err) => {
-            alert('An error occurred while trying to send your messge. Please try again later.', err.text);
+            setLoading(false);
+        }).catch(err => {
+            alert('Error: ' + err.message);
         });
+    }
+    const handleSubmit = e => {
+        if (!loading) formRef.current.requestSubmit();
     }
 
     return (
@@ -63,21 +80,19 @@ export default function ContactForm() {
                         <label htmlFor="name">Your name&gt;</label>
                         <input ref={nameRef} type="text" name="name" id="name" value={name} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
                     </div>
-                    {lines > 0 ? 
-                    <>
-                    <div>
+                    <div className={lines < 1 ? c.ghost : null}>
                         <label htmlFor="email">Email&gt;</label>
                         <input ref={emailRef} type="email" name="email" id="email" value={email} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
                     </div>
-                    {lines > 1 ?
+                    {lines > 0 ?
                     <>
-                    <div>
+                    <div className={lines < 2 ? c.ghost : null}>
                         <label htmlFor="subject">Subject&gt;</label>
                         <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
                     </div>
-                    {lines > 2 ?
+                    {lines > 1 ?
                     <>
-                    <div>
+                    <div className={lines < 3 ? c.ghost : null}>
                         <label htmlFor="message">Message&gt;</label>
                         <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
                     </div>
@@ -85,12 +100,10 @@ export default function ContactForm() {
                     : null}
                     </>
                     : null}
-                    </>
-                    : null}
                 </form>
             </div>
             <div className={c.buttonWrap}>
-                <button onClick={() => formRef.current.requestSubmit()}>Send</button>
+                <button onClick={handleSubmit} className={loading ? c.loading : null}><span>Send</span><div className={c.loading}></div></button>
             </div>
         </>
     );
