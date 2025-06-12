@@ -32,6 +32,7 @@
     flex-direction: column;
     background-color: var(--terminal-screen);
     border-radius: 0 0 10px 10px;
+    box-shadow: 10px 10px 20px #0003;
 }
 .contactForm > p {
     padding: 0;
@@ -88,9 +89,54 @@
     height: 3rem;
     font-size: 2rem;
     background-color: var(--txt);
-    color: var(--bkg);
     border: none;
     outline: none;
     font-weight: bold;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.buttonWrap button.loading {
+    cursor: wait;
+}
+.buttonWrap button span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bkg);
+    text-shadow: none;
+    font-family: 'Kode Mono', monospace;
+    scale: 100%;
+    transition: all 1s;
+}
+button .loading {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-image: url(../media/icons/loading.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 90%;
+    animation: loading 1s linear infinite;
+    transition: all 1s;
+    scale: 2000%;
+}
+button.loading span {
+    scale: 0%;
+}
+button.loading .loading {
+    scale: 100%;
+}
+@keyframes loading {
+    from { transform: rotateZ(0deg); }
+    to { transform: rotateZ(360deg); }
+}
+
+.ghost {
+    opacity: 25%;
+    pointer-events: none;
 }
