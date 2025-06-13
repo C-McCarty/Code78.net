@@ -34,7 +34,7 @@
     background-color: var(--terminal-screen);
     width: fit-content;
     color: #FFF;
-    text-shadow: 0 0 3px #FFF, 0 0 5px #EEE;
+    /* text-shadow: 0 0 3px #FFF, 0 0 5px #EEE; */
     border-radius: 10px 10px 0 0;
 }
 .carouselItem p {
