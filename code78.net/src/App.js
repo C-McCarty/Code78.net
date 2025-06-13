@@ -26,7 +26,8 @@ function App() {
 
                 const timeout = setTimeout(() => {
                     el.className = "glitch";
-                    const ANIM_CODE = (Math.random() < 0.2 ? 1 : 2);
+                    const CHANCE = Math.random();
+                    const ANIM_CODE = (CHANCE < 0.2 ? 1 : CHANCE < 0.5 ? 3 : 2);
                     setTimeout(() => {
                         el.classList.add(`glitch${ANIM_CODE}`);
                     }, Math.random() * 1);

@@ -198,6 +198,11 @@ canvas:nth-of-type(4) {left: 75%;}
     animation-iteration-count: 1;
     animation-timing-function: steps(1);
 }
+.glitch3::after {
+    animation: glitch3 1s;
+    animation-iteration-count: 1;
+    animation-timing-function: steps(1);
+}
 @keyframes glitch1 {
     0%, 9% {
         transform: translate(0);
@@ -265,10 +270,24 @@ canvas:nth-of-type(4) {left: 75%;}
         transform: translate(0);
     }
     10%, 20% {
-        transform: translate(2px, 0) rotateY(0);
+        transform: translate(2px, 0);
     }
     21%, 100% {
-        transform: translate(0) rotateY(0);
+        transform: translate(0);
+    }
+}
+@keyframes glitch3 {
+    0%, 9% {
+        transform: translate(0);
+    }
+    10%, 20% {
+        transform: translate(25%, -25%);
+    }
+    21%, 29% {
+        transform: translate(-25%, 25%) rotateZ(180deg);
+    }
+    30%, 100% {
+        transform: translate(0);
     }
 }
 
