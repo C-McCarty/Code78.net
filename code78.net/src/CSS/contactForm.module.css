@@ -9,9 +9,9 @@
 }
 .formWrap > h6 {
     color: #FFF;
-    text-shadow:
+    /* text-shadow:
         0 0 3px #FFF,
-        0 0 3px #EEE;
+        0 0 3px #EEE; */
     margin: 10px;
     margin-left: 20px;
     margin-bottom: 0;
@@ -60,7 +60,7 @@
 .contactForm input:autofill,
 .contactForm input:-webkit-autofill {
     -webkit-text-fill-color: #111;
-    text-shadow: 0 0 3px #111;
+    /* text-shadow: 0 0 3px #111; */
 }
 .contactForm textarea {
     height: 100%;
@@ -143,8 +143,8 @@ button.loading .loading {
 
 @media screen and (max-width: 650px) {
     .formWrap h6 {
-        text-shadow:
+        /* text-shadow:
             0 0 3px #FFF8,
-            0 0 3px #EEE8;
+            0 0 3px #EEE8; */
     }
 }
