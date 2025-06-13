@@ -297,11 +297,19 @@ export default function CircuitBkg({ page }) {
             animate(canvasRef.current);
         }
     }, [page]);
-
+    
+    let prevWidth = window.innerWidth;
+    let prevHeight = window.innerHeight;
     window.addEventListener("resize", () => {
-        if (canvasRef.current) {
-            canvasSetup(canvasRef.current);
+        if (!canvasRef.current) {
+            return;
         }
+        if (window.innerWidth == prevWidth && window.innerHeight == prevHeight) {
+            return;
+        }
+        prevWidth = window.innerWidth;
+        prevHeight = window.innerHeight;
+        canvasSetup(canvasRef.current);
     });
 
     return <canvas ref={canvasRef}></canvas>;
