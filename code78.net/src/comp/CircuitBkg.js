@@ -292,16 +292,22 @@ export default function CircuitBkg({ page }) {
         requestAnimationFrame(updateAnimation);
     };
 
+    const canvasContentWidth = useRef(null);
     useEffect(() => {
-        if (canvasRef.current) {
-            animate(canvasRef.current);
-            const resizeObserver = new ResizeObserver(() => {
+        if (!canvasRef.current) {
+            return;
+        }
+        animate(canvasRef.current);
+        const resizeObserver = new ResizeObserver(([entry]) => {
+            const observedWidth = entry.contentRect.width;
+            if (observedWidth != canvasContentWidth.current) {
+                canvasContentWidth.current = observedWidth;
                 canvasSetup(canvasRef.current);
-            });
-            resizeObserver.observe(canvasRef.current);
-            return () => {
-                resizeObserver.disconnect();
             }
+        });
+        resizeObserver.observe(canvasRef.current);
+        return () => {
+            resizeObserver.disconnect();
         }
     }, [page]);
 
