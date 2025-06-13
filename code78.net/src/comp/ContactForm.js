@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import c from "../CSS/contactForm.module.css";
 import emailjs from "emailjs-com";
+import P from "./P";
 
 export default function ContactForm() {
     // useState
@@ -12,6 +13,7 @@ export default function ContactForm() {
     const handleSubjectChange = e => setSubject(e.target.value);
     const [message, setMessage] = useState("");
     const handleMessageChange = e => setMessage(e.target.value);
+    const [sentMessage, toggleSentMessage] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -38,10 +40,22 @@ export default function ContactForm() {
         e.preventDefault();
         setLoading(true);
         try {
-            if (name.trim().length === 0) throw new Error("Must include a name.");
-            if (email.trim().length === 0 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) throw new Error("Must include an email address.");
-            if (subject.trim().length === 0) throw new Error("Must include a subject.");
-            if (message.trim().length === 0) throw new Error("Must include a message.");
+            if (name.trim().length === 0) {
+                nameRef.current.focus();
+                throw new Error("Must include a name.");
+            }
+            if (email.trim().length === 0 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                emailRef.current.focus();
+                throw new Error("Must include an email address.");
+            }
+            if (subject.trim().length === 0) {
+                subjectRef.current.focus();
+                throw new Error("Must include a subject.");
+            }
+            if (message.trim().length === 0) {
+                messageRef.current.focus();
+                throw new Error("Must include a message.");
+            }
         } catch (err) {
             alert('Error: ' + err.message);
             setLoading(false);
@@ -60,14 +74,18 @@ export default function ContactForm() {
             setMessage("");
             alert('Message sent!', response.status, response.text);
             setLoading(false);
+            toggleSentMessage(true);
         }).catch(err => {
             alert('Error: ' + err.message);
         });
     }
     const handleSubmit = e => {
+        if (sentMessage) {
+            alert("You already sent a message!");
+            return;
+        }
         if (!loading) formRef.current.requestSubmit();
     }
-
     return (
         <>
             <div className={c.formWrap}>
@@ -76,34 +94,38 @@ export default function ContactForm() {
                     <p>Contact Us Form</p>
                     <p>Copyright (C) Code78.net. All rights reserved.</p>
                     <br />
-                    <div>
-                        <label htmlFor="name">Your name&gt;</label>
-                        <input ref={nameRef} type="text" name="name" id="name" value={name} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
-                    </div>
-                    <div className={lines < 1 ? c.ghost : null}>
-                        <label htmlFor="email">Email&gt;</label>
-                        <input ref={emailRef} type="email" name="email" id="email" value={email} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
-                    </div>
-                    {lines > 0 ?
-                    <>
-                    <div className={lines < 2 ? c.ghost : null}>
-                        <label htmlFor="subject">Subject&gt;</label>
-                        <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
-                    </div>
-                    {lines > 1 ?
-                    <>
-                    <div className={lines < 3 ? c.ghost : null}>
-                        <label htmlFor="message">Message&gt;</label>
-                        <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
-                    </div>
-                    </>
-                    : null}
-                    </>
-                    : null}
+                    {sentMessage ?
+                    <P content="Your Message was sent. We will get back to you as soon as we can!" />
+                    : <>
+                        <div>
+                            <label htmlFor="name">Your name&gt;</label>
+                            <input ref={nameRef} type="text" name="name" id="name" value={name} onBlur={() => setLines((lines < 1) ? 1 : ((lines < 2) ? 2 : 3))} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleNameChange} required />
+                        </div>
+                        <div className={lines < 1 ? c.ghost : null}>
+                            <label htmlFor="email">Email&gt;</label>
+                            <input ref={emailRef} type="email" name="email" id="email" value={email} onBlur={() => setLines((lines < 2) ? 2 : 3)} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleEmailChange} required />
+                        </div>
+                        {lines > 0 ?
+                            <>
+                            <div className={lines < 2 ? c.ghost : null}>
+                            <label htmlFor="subject">Subject&gt;</label>
+                            <input ref={subjectRef} type="text" name='subject' id='subject' value={subject} onBlur={() => setLines(3)} onKeyDown={handleNewLineDown} onKeyUp={handleNewLineUp} onChange={handleSubjectChange} required />
+                            </div>
+                            {lines > 1 ?
+                                <>
+                        <div className={lines < 3 ? c.ghost : null}>
+                            <label htmlFor="message">Message&gt;</label>
+                            <textarea ref={messageRef} name="message" id="message" value={message} onChange={handleMessageChange} required />
+                        </div>
+                        </>
+                        : null}
+                        </>
+                        : null}
+                    </>}
                 </form>
             </div>
             <div className={c.buttonWrap}>
-                <button onClick={handleSubmit} className={loading ? c.loading : null}><span>Send</span><div className={c.loading}></div></button>
+                <button onClick={handleSubmit} className={loading ? c.loading : null} >{sentMessage ? <span>Sent</span> : <span>Send</span>}<div className={c.loading}></div></button>
             </div>
         </>
     );
