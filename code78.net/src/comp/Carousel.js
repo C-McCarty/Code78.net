@@ -12,11 +12,12 @@ export default function Carousel() {
     useEffect(() => {
         const a = items.map((el, i) => <div className={i === pos ? c.innerWrap : `${c.innerWrap} ${c.inactive}`}><P key={i} pos={pos} selfPos={i} title={el.title} content={el.content} /></div>);
         setItems(a);
-
+    }, [items, pos]);
+    useEffect(() => {
         if (!carouselRef.current) return;
         carouselRef.current.style.width = 35 * cItems.length + "vw";
         carouselRef.current.style.left = (pos * -35) + 15 + "vw";
-    }, [items, pos, cItems]);
+    }, [cItems]);
 
     const handlePosChange = x => {
         if (x > 0) {
