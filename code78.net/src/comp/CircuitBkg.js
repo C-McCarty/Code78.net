@@ -3,8 +3,8 @@ import theme from "../data/theme.json";
 
 export default function CircuitBkg({ page }) {
     const COLOR1 = theme.color1;
-    const COLOR2 = theme.color1;
-    const COLOR3 = theme.color1;
+    const COLOR2 = theme.color2;
+    const COLOR3 = theme.color3;
     const NODE_COLOR_EMPTY = theme.nodeEmpty;
     const NODE_COLOR_FILLED = theme.nodeFilled;
 
@@ -126,8 +126,8 @@ export default function CircuitBkg({ page }) {
         ctx.beginPath();
         ctx.arc(x0, y0, lineWidth * 2, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = (reColor && reColor != NODE_LINE_COLOR) ? reColor : NODE_COLOR_FILLED;
-        if (pseudoRand((x * colNodeCount) + y) == 0) {
+        ctx.fillStyle = (reColor && reColor !== NODE_LINE_COLOR) ? reColor : NODE_COLOR_FILLED;
+        if (pseudoRand((x * colNodeCount) + y) === 0) {
                 ctx.fillStyle = NODE_COLOR_EMPTY
         }
         ctx.beginPath();
@@ -136,31 +136,31 @@ export default function CircuitBkg({ page }) {
     }
 
     function isValidEnd(x, y) {
-        if (nodeEnd[x] == undefined) {
+        if (nodeEnd[x] === undefined) {
             return false;
         }
         if (nodeEnd[x][y]) {
             return false;
         }
-        if (nodeDir[x][y] != NODE_UNSET_ID) {
+        if (nodeDir[x][y] !== NODE_UNSET_ID) {
             return false;
         }
         let blockSize = 1;
-        if (x - 1 == -1) {
+        if (x - 1 === -1) {
             blockSize++;
         } else if (nodeEnd[x - 1][y]) {
             blockSize++;
-            if (x - 2 == -1) {
+            if (x - 2 === -1) {
                 blockSize++;
             } else if (nodeEnd[x - 2][y]) {
                 blockSize++;
             }
         }
-        if (x + 1 == colNodeCount) {
+        if (x + 1 === colNodeCount) {
             blockSize++;
         } else if (nodeEnd[x + 1][y]) {
             blockSize++;
-            if (x + 2 == colNodeCount) {
+            if (x + 2 === colNodeCount) {
                 blockSize++;
             } else if (nodeEnd[x + 2][y]) {
                 blockSize++;
@@ -172,12 +172,12 @@ export default function CircuitBkg({ page }) {
     function getDx(x, y) {
         const dxPossibilities = [];
         if (x > 0) {
-            if (!nodeEnd[x - 1][y - 1] && nodeDir[x - 1][y] != 1) {
+            if (!nodeEnd[x - 1][y - 1] && nodeDir[x - 1][y] !== 1) {
                 dxPossibilities.push(-1);
             }
         }
         if (x < colNodeCount - 1) {
-            if (!nodeEnd[x + 1][y - 1] && nodeDir[x + 1][y] != -1) {
+            if (!nodeEnd[x + 1][y - 1] && nodeDir[x + 1][y] !== -1) {
                 dxPossibilities.push(1);
             }
         }
@@ -226,12 +226,12 @@ export default function CircuitBkg({ page }) {
 
         return result.slice(0, totalSteps);
     }
+
     const GLITCH_COLOR_ARR = interpolateHexColors([COLOR1, COLOR2, COLOR3, COLOR2, COLOR1], STEPS);
     GLITCH_COLOR_ARR.push(NODE_LINE_COLOR);
-
     const GLITCH_PROB = 1 / 500;
     function handleGlitch() {
-        if (glitchState == 0) {
+        if (glitchState === 0) {
             if (glitchableNodes.length > 0 && Math.random() < GLITCH_PROB) {
                 [glitchNodeX, glitchNodeY] = glitchableNodes[Math.floor(Math.random() * glitchableNodes.length)];
                 glitchState++;
@@ -240,7 +240,7 @@ export default function CircuitBkg({ page }) {
             let glitchColor = GLITCH_COLOR_ARR[glitchState];
             let x = glitchNodeX;
             let y = glitchNodeY;
-            if (nodeDir[x] != undefined) {
+            if (nodeDir[x] !== undefined) {
                 while (y > 1) {
                     drawPath(x, y, nodeDir[x][y], false, glitchColor);
                     x += nodeDir[x][y];
@@ -278,7 +278,7 @@ export default function CircuitBkg({ page }) {
             // Failed to find new node to begin drawing! Screen is probably full.
         }
         nodeEnd[x][y] = true;
-        while (nodeDir[x][y] == NODE_UNSET_ID) {
+        while (nodeDir[x][y] === NODE_UNSET_ID) {
             xStack.push(x);
             yStack.push(y);
             dxStack.push(dx);
@@ -307,10 +307,10 @@ export default function CircuitBkg({ page }) {
         }
         lastFrameTime += FRAME_DURATION;
         handleGlitch();
-        if (xStack.length == 0) {
+        if (xStack.length === 0) {
             attemptCircuitBuild();
         }
-        if (xStack.length == 0) {
+        if (xStack.length === 0) {
             //Could not build new circuit!
             requestAnimationFrame(updateAnimation);
             return;
@@ -324,7 +324,7 @@ export default function CircuitBkg({ page }) {
             y = yStack.pop();
             dx = dxStack.pop();
             drawPath(x, y, dx);
-            if (xStack.length == 0) {
+            if (xStack.length === 0) {
                 drawNode(x, y);
                 glitchableNodes.push([x, y]);
             }
@@ -349,7 +349,7 @@ export default function CircuitBkg({ page }) {
         animate(canvasRef.current);
         const resizeObserver = new ResizeObserver(([entry]) => {
             const observedWidth = entry.contentRect.width;
-            if (observedWidth != canvasContentWidth.current) {
+            if (observedWidth !== canvasContentWidth.current) {
                 canvasContentWidth.current = observedWidth;
                 canvasSetup(canvasRef.current);
             }
