@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from "react";
+import theme from "../data/theme.json";
 
 export default function CircuitBkg({ page }) {
+    const COLOR1 = theme.color1;
+    const COLOR2 = theme.color1;
+    const COLOR3 = theme.color1;
+    const NODE_COLOR_EMPTY = theme.nodeEmpty;
+    const NODE_COLOR_FILLED = theme.nodeFilled;
+
+
     const canvasRef = useRef();
     const [canvasInit, setCanvasInit] = useState(false);
 
@@ -88,7 +96,7 @@ export default function CircuitBkg({ page }) {
         return (n * 2 - 0.5) * segmentSize;
     }
 
-    const LINE_COLOR = "#F80";
+    const LINE_COLOR = COLOR1;
     function drawPath(x, y, dx, drawBloom = true, drawColor = LINE_COLOR) {
         const [x0, y0] = [coord(x + dx + 1), coord(Math.max(y - 1, 0))];
         const [x1, y1] = [coord(x + 1), coord(y)];
@@ -107,9 +115,9 @@ export default function CircuitBkg({ page }) {
         ctx.stroke();
     }
 
-    const NODE_LINE_COLOR = LINE_COLOR
-    const NODE_COLOR_EMPTY = "#733D00";
-    const NODE_COLOR_FILLED = "#E70";
+    const NODE_LINE_COLOR = LINE_COLOR;
+    // const NODE_COLOR_EMPTY = "#733D00";
+    // const NODE_COLOR_FILLED = "#E70";
     function drawNode(x, y, reColor = null) {
         const [x0, y0] = [coord(x + 1), coord(y)];
         ctx.shadowColor = reColor || NODE_LINE_COLOR;
@@ -179,8 +187,49 @@ export default function CircuitBkg({ page }) {
         return dxPossibilities[Math.floor(Math.random() * dxPossibilities.length)];
     }
 
+    const STEPS = 60;
+    function interpolateHexColors(hexColors, totalSteps) {
+        function hexToRgb(hex) {
+            hex = hex.replace(/^#/, '');
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const bigint = parseInt(hex, 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+        function rgbToHex({ r, g, b }) {
+            return ('#' + [r, g, b].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+            }).join(''));
+        }
+        if (hexColors.length < 2 || totalSteps < 2) throw new Error('Need at least 2 hex colors and 2 steps');
+
+        const segments = hexColors.length - 1;
+        const stepsPerSegment = totalSteps / segments;
+        const result = [];
+
+        for (let i = 0; i < segments; i++) {
+            const start = hexToRgb(hexColors[i]);
+            const end = hexToRgb(hexColors[i + 1]);
+            for (let j = 0; j < stepsPerSegment; j++) {
+                const t = j / stepsPerSegment;
+                const r = Math.round(start.r + (end.r - start.r) * t);
+                const g = Math.round(start.g + (end.g - start.g) * t);
+                const b = Math.round(start.b + (end.b - start.b) * t);
+                result.push(rgbToHex({ r, g, b }));
+            }
+        }
+        result.push(hexColors[hexColors.length - 1]);
+
+        return result.slice(0, totalSteps);
+    }
+    const GLITCH_COLOR_ARR = interpolateHexColors([COLOR1, COLOR2, COLOR3, COLOR2, COLOR1], STEPS);
+    GLITCH_COLOR_ARR.push(NODE_LINE_COLOR);
+
     const GLITCH_PROB = 1 / 500;
-    const GLITCH_COLOR_ARR = ['#ff8800', '#ff8200', '#ff7c00', '#ff7600', '#ff7000', '#ff6a00', '#ff6400', '#ff5e00', '#ff5800', '#ff5200', '#ff4d00', '#ff4700', '#ff4100', '#ff3b00', '#ff3500', '#ff2f00', '#ff2900', '#ff2300', '#ff1d00', '#ff1700', '#ff1100', '#ff1100', '#ff2f20', '#ff4d40', '#ff6a60', '#ff8880', '#ffa69f', '#ffc4bf', '#ffe1df', '#ffffff', '#ffffff', '#ffe1df', '#ffc4bf', '#ffa69f', '#ff8880', '#ff6a60', '#ff4d40', '#ff2f20', '#ff1100', '#ff1100', '#ff1700', '#ff1d00', '#ff2300', '#ff2900', '#ff2f00', '#ff3500', '#ff3b00', '#ff4100', '#ff4700', '#ff4d00', '#ff5200', '#ff5800', '#ff5e00', '#ff6400', '#ff6a00', '#ff7000', '#ff7600', '#ff7c00', '#ff8200', NODE_LINE_COLOR];
     function handleGlitch() {
         if (glitchState == 0) {
             if (glitchableNodes.length > 0 && Math.random() < GLITCH_PROB) {

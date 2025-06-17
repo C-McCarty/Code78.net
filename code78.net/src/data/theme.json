@@ -1,0 +1,10 @@
+{
+    "bkg": "#111",
+    "color1": "#FF8800",
+    "color2": "#F6FF00",
+    "color3": "#FF0800",
+    "nodeEmpty": "#733D00",
+    "nodeFilled": "#EE7700",
+    "terminalBkg": "#2E2E2E",
+    "terminalScreen": "#0C0C0C"
+}
