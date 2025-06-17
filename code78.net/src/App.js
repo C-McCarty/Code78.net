@@ -57,10 +57,10 @@ function App() {
             <div className="main">
                 <Section secRef={aboutRef}>
                     <h2 className='glitch' data-glitch="Who We Are">Who We Are</h2>
-                    <P content="We're a dedicated team of full-stack developers who build reliable, easy-to-use websites and applications. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or improving what you already have, we’re here to help!" />
+                    <P title={"About Us"} content="We're a dedicated team of full-stack developers who build reliable, easy-to-use websites and applications. We focus on clear communication, clean code, and making sure everything works the way it should. Whether you're starting from scratch or improving what you already have, we’re here to help!" />
                 </Section>
                 <Section secRef={serviceRef}>
-                    <h2  className='glitch' data-glitch="What We Do">What We Do</h2>
+                    <h2 className='glitch' data-glitch="What We Do">What We Do</h2>
                     {window.innerWidth > 1100 ? 
                     <Carousel />
                     : <TabUI />}

@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import c from "../CSS/carousel.module.css";
-import CarouselItem from './CarouselItem';
+import P from './P';
 import items from "../data/services.json";
 
 export default function Carousel() {
     const [pos, setPos] = useState(1);
     const [cItems, setItems] = useState([]);
 
+    const carouselRef = useRef(null);
+
     useEffect(() => {
-        const a = items.map((el, i) => <CarouselItem key={i} pos={pos} selfPos={i} title={el.title}>{el.content}</CarouselItem>);
+        const a = items.map((el, i) => <div className={i === pos ? c.innerWrap : `${c.innerWrap} ${c.inactive}`}><P key={i} pos={pos} selfPos={i} title={el.title} content={el.content} /></div>);
         setItems(a);
-    }, [items, pos]);
+
+        if (!carouselRef.current) return;
+        carouselRef.current.style.width = 35 * cItems.length + "vw";
+        carouselRef.current.style.left = (pos * -35) + 15 + "vw";
+    }, [items, pos, cItems]);
 
     const handlePosChange = x => {
         if (x > 0) {
@@ -29,13 +35,9 @@ export default function Carousel() {
         }
     }
 
-    const posStyle = {
-        left: (pos * -35) + 20 + "vw"
-    }
-
     return (
         <div className={c.carouselWrap}>
-            <div className={c.carousel} style={posStyle}>
+            <div className={c.carousel} ref={carouselRef}>
                 {cItems}
             </div>
             <div className={c.left} onClick={() => handlePosChange(-1)}></div>

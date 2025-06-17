@@ -7,43 +7,28 @@
     overflow: hidden;
 }
 .carousel {
-    position: absolute;
+    position: relative;
     top: 0;
-    width: fit-content;
     height: 100%;
     display: flex;
     transition: all 1s;
     transition-timing-function: cubic-bezier(0.25,-0.25,0.25,1.25);
 }
-.carouselItem {
-    background-color: var(--terminal-bkg);
-    box-shadow: 5px 5px 10px #0003;
-    border-radius: 10px;
+.innerWrap {
+    width: 100%;
     height: 100%;
-    width: 25vw;
-    margin-right: 10vw;
-    display: flex;
-    flex-direction: column;
+    padding: 2.5vw;
+    /* display: flex; */
+    /* flex-direction: column; */
+    transition: all 1s;
 }
-.carouselItem h5 {
-    margin: 8px;
-    margin-bottom: 0;
-    margin-left: 20px;
-    padding: 5px;
-    padding-right: 20px;
-    background-color: var(--terminal-screen);
-    width: fit-content;
-    color: #FFF;
-    /* text-shadow: 0 0 3px #FFF, 0 0 5px #EEE; */
-    border-radius: 10px 10px 0 0;
+.innerWrap > * {
+    height: 100%;
 }
-.carouselItem p {
-    background-color: var(--terminal-screen);
-    flex-grow: 1;
-    border-radius: 0 0 10px 10px;
-    padding: 5px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+.inactive {
+    filter: blur(5px);
+    user-select: none;
+    -webkit-user-drag: none;
 }
 .carouselItem p::-webkit-scrollbar { background-color: var(--terminal-screen); width: 0; }
 .carouselItem p::-webkit-scrollbar-thumb { background-color: #3333; border-radius: 10px; cursor: pointer; }
@@ -57,7 +42,6 @@
     bottom: 0;
     width: 25%;
     cursor: pointer;
-    backdrop-filter: blur(5px);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 50%;

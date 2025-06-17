@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import c from "../CSS/terminal.module.css";
 
-export default function P({ title, content, pos="noPos", selfPos="noPos" }) {
+export default function P({ title=null, content, pos="noPos", selfPos="noPos" }) {
     const [text, setText] = useState("");
     const [isVisible, setIsVisible] = useState(false);
     const pRef = useRef(null);
@@ -40,16 +41,19 @@ export default function P({ title, content, pos="noPos", selfPos="noPos" }) {
     }
 
     return (
-        <div className="terminalWrap">
-            <div className="terminalHeader">
+        <div className={c.terminalWrap}>
+            {title === null ? null :
+            <div className={c.terminalHeader}>
                 <h6>{title}</h6>
             </div>
-            <div className="terminalBody">
-                <p ref={pRef} className='p-typed' onClick={finishAnim}>
+            }
+            <div className={c.terminalBody}>
+                <p ref={pRef} className={c.terminalText}>
                     <span>&gt; </span>
                     {text}
                     <span className={text.length === content.length ? 'blink' : null}>|</span>
                 </p>
+                {text.length === content.length ? null : <div className={c.skip} onClick={finishAnim}></div>}
             </div>
         </div>
     );
