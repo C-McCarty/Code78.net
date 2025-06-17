@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export default function P({ content, pos="noPos", selfPos="noPos" }) {
+export default function P({ title, content, pos="noPos", selfPos="noPos" }) {
     const [text, setText] = useState("");
     const [isVisible, setIsVisible] = useState(false);
     const pRef = useRef(null);
@@ -40,10 +40,17 @@ export default function P({ content, pos="noPos", selfPos="noPos" }) {
     }
 
     return (
-        <p ref={pRef} className='p-typed' onClick={finishAnim}>
-            <span>&gt; </span>
-            {text}
-            <span className={text.length === content.length ? 'blink' : null}>|</span>
-        </p>
+        <div className="terminalWrap">
+            <div className="terminalHeader">
+                <h6>{title}</h6>
+            </div>
+            <div className="terminalBody">
+                <p ref={pRef} className='p-typed' onClick={finishAnim}>
+                    <span>&gt; </span>
+                    {text}
+                    <span className={text.length === content.length ? 'blink' : null}>|</span>
+                </p>
+            </div>
+        </div>
     );
 }
