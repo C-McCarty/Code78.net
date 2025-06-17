@@ -31,12 +31,20 @@
     padding: 5px;
     background-color: var(--terminal-screen);
     border-radius: 0 0 10px 10px;
+    position: relative;
+}
+.tabPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
 }
-.tabPanelWrap p {
-    padding: 0;
+.tabPanel > * {
     flex-grow: 1;
+    z-index: 1;
 }
 .active {
     background-color: var(--terminal-screen);
@@ -53,11 +61,5 @@
     .tabHeader::-webkit-scrollbar { height: 0; }
     .tab h6 {
         font-size: 0.75rem;
-    }
-    .tabPanelWrap p {
-        font-size: 1rem;
-    }
-    .tab h6 {
-        /* text-shadow: 0 0 3px #FFF8, 0 0 2px #EEE8; */
     }
 }
