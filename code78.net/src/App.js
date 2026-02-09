@@ -51,8 +51,7 @@ function App() {
         <div className="App">
             <CircuitBkg />
             <CircuitBkg />
-            <CircuitBkg />
-            <CircuitBkg />
+            <div className="glass"></div>
             <Header aboutRef={aboutRef} serviceRef={serviceRef} contactRef={contactRef} />
             <div className="main">
                 <Section secRef={aboutRef}>
