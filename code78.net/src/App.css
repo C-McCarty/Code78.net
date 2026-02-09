@@ -122,9 +122,10 @@ canvas {
     z-index: -1;
     pointer-events: none;
 }
-canvas:nth-of-type(2) {left: 25%;}
+/* canvas:nth-of-type(2) {left: 25%;}
 canvas:nth-of-type(3) {left: 50%;}
-canvas:nth-of-type(4) {left: 75%;}
+canvas:nth-of-type(4) {left: 75%;} */
+canvas:nth-of-type(2) {left: 75%;}
 
 .glitch {
     position: relative;
@@ -261,4 +262,11 @@ canvas:nth-of-type(4) {left: 75%;}
     h4 { font-size: 2rem; }
     h5 { font-size: 1.5rem; }
     h6 { font-size: 1rem; }
+}
+.glass {
+    position: fixed;
+    inset: 0;
+    background-color: #00000080;
+    backdrop-filter: blur(1px);
+    z-index: 1;
 }

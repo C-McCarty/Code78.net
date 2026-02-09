@@ -32,7 +32,7 @@ export default function CircuitBkg({ page }) {
     const glitchableNodes = [];
     let ctx = null;
     const MIN_COL_NODE_COUNT = 5;
-    const TARGET_COL_WIDTH = 175;
+    const TARGET_COL_WIDTH = 250;
     const MIN_LINE_WIDTH = 1;
     const LINE_WIDTH_PORTION = 0.2;
     const BLOOM_SIZE = 3;
