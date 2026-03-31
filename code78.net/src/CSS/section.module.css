@@ -6,6 +6,17 @@
     justify-content: center;
     align-items: center;
 }
+.expandable {
+    height: fit-content;
+    min-height: 100vh;
+}
+.expandable p {
+    font-size: 1.5rem;
+    padding-bottom: 1rem;
+}
+.expandable h2 {
+    align-self: start;
+}
 .innerWrap {
     width: 75%;
     height: 75%;
@@ -17,6 +28,9 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px var(--color1);
+}
+.expandable .innerWrap {
+    align-items: center;
 }
 .grid {
     position: absolute;
@@ -35,6 +49,30 @@
 .innerWrap h2 {
     position: relative;
     z-index: 1;
+}
+
+.buttonWrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button {
+    padding: 2rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 3rem;
+    font-size: 2rem;
+    background-color: var(--color1);
+    color: var(--bkg);
+    border: none;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 @media screen and (max-width: 1100px) {
