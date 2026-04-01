@@ -39,7 +39,7 @@ export default function Header({aboutRef, serviceRef, contactRef}) {
                     <div className='navBtn glow' onClick={()=>scrollToSection(aboutRef)}>About</div>
                     <div className='navBtn glow' onClick={()=>scrollToSection(serviceRef)}>Services</div>
                     <div className='navBtn glow' onClick={()=>scrollToSection(contactRef)}>Contact</div>
-                    <a className='navBtn glow' href="/planner">Planner</a>
+                    <Link to="/planner" className='navBtn glow'>Planner</Link>
                 </nav>
                 : null}
                 <div className="scanLines"></div>
