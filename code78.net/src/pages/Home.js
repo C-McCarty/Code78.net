@@ -3,8 +3,9 @@ import P from '../comp/P';
 import ContactForm from '../comp/ContactForm';
 import Carousel from '../comp/Carousel';
 import TabUI from '../comp/TabUI';
+import Portfolio from '../comp/Portfolio';
 
-export default function Home({aboutRef, serviceRef, contactRef}) {
+export default function Home({aboutRef, serviceRef, workRef, contactRef}) {
 
     return (
             <>
@@ -15,9 +16,13 @@ export default function Home({aboutRef, serviceRef, contactRef}) {
                     </Section>
                     <Section secRef={serviceRef}>
                         <h2 className='glitch' data-glitch="What We Do">What We Do</h2>
-                        {window.innerWidth > 1100 ? 
+                        {window.innerWidth > 1100 ?
                         <Carousel />
                         : <TabUI />}
+                    </Section>
+                    <Section secRef={workRef} expandable>
+                        <h2 className='glitch' data-glitch="Our Work">Our Work</h2>
+                        <Portfolio />
                     </Section>
                     {/* <Section secRef={contactRef}>
                         <h2 className='glitch' data-glitch="Get In Touch">Get In Touch</h2>

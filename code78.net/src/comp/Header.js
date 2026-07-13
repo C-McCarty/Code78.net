@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-export default function Header({aboutRef, serviceRef, contactRef}) {
+export default function Header({aboutRef, serviceRef, workRef, contactRef}) {
     const navigate = useNavigate();
     const location = useLocation();
     const scrollToSection = async elementRef => {
@@ -38,6 +38,7 @@ export default function Header({aboutRef, serviceRef, contactRef}) {
                 <nav>
                     <div className='navBtn glow' onClick={()=>scrollToSection(aboutRef)}>About</div>
                     <div className='navBtn glow' onClick={()=>scrollToSection(serviceRef)}>Services</div>
+                    <div className='navBtn glow' onClick={()=>scrollToSection(workRef)}>Work</div>
                     <div className='navBtn glow' onClick={()=>scrollToSection(contactRef)}>Contact</div>
                     <Link to="/planner" className='navBtn glow'>Planner</Link>
                 </nav>

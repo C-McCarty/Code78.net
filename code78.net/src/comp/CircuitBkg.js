@@ -37,11 +37,12 @@ export default function CircuitBkg({ page }) {
     const LINE_WIDTH_PORTION = 0.2;
     const BLOOM_SIZE = 3;
     function canvasSetup(canvasElement) {
+        const rect = canvasElement.getBoundingClientRect();
+        if (!rect.width || !rect.height) return; // canvas not laid out yet; ResizeObserver will retry with real dimensions
         //Get column count
         colNodeCount = Math.max(Math.round(window.innerWidth / TARGET_COL_WIDTH), MIN_COL_NODE_COUNT);
         dividers = 2 * colNodeCount + 1;
         //Sizing canvas
-        const rect = canvasElement.getBoundingClientRect();
         dpr = window.devicePixelRatio || 1;
         canvasElement.width = rect.width * dpr;
         canvasElement.height = rect.height * dpr;
@@ -298,6 +299,11 @@ export default function CircuitBkg({ page }) {
     let lastFrameTime = null;
     const FRAME_DURATION = 1000 / 60;
     function updateAnimation(time) {
+        if (!ctx) {
+            // Canvas wasn't laid out at mount (0-size); wait for ResizeObserver to run canvasSetup.
+            requestAnimationFrame(updateAnimation);
+            return;
+        }
         if (!lastFrameTime) {
             lastFrameTime = time;
         }

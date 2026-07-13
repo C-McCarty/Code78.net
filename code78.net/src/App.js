@@ -14,6 +14,7 @@ function App() {
 
     const aboutRef = useRef(null);
     const serviceRef = useRef(null);
+    const workRef = useRef(null);
     const contactRef = useRef(null);
 
     // useEffect(() => {
@@ -53,9 +54,9 @@ function App() {
                 <CircuitBkg />
                 <CircuitBkg />
                 <div className="glass"></div>
-                <Header aboutRef={aboutRef} serviceRef={serviceRef} contactRef={contactRef} />
+                <Header aboutRef={aboutRef} serviceRef={serviceRef} workRef={workRef} contactRef={contactRef} />
                 <Routes>
-                    <Route path="/" element={<Home aboutRef={aboutRef} serviceRef={serviceRef} contactRef={contactRef} />} />
+                    <Route path="/" element={<Home aboutRef={aboutRef} serviceRef={serviceRef} workRef={workRef} contactRef={contactRef} />} />
                     <Route path="/planner" element={<Planner />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
