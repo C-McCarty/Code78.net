@@ -1,0 +1,102 @@
+.grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-content: center;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--terminal-screen);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--color1);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover {
+    box-shadow: 0 0 18px var(--color1);
+    transform: translateY(-3px);
+}
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background-color: var(--terminal-bkg);
+}
+.cardTitle {
+    font-family: 'Kode Mono', monospace;
+    color: var(--color2);
+    font-size: 1.15rem;
+}
+.badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+.live { color: var(--color2); }
+.wip { color: var(--color3); }
+.cardBody {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1rem;
+}
+.desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    font-weight: 400;
+}
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.tag {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--nodeFilled);
+    border-radius: 4px;
+    color: var(--color1);
+    white-space: nowrap;
+}
+.cardFooter {
+    margin-top: auto;
+    padding-top: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.liveLink {
+    text-decoration: none;
+    color: var(--color2);
+    font-size: 0.85rem;
+    transition: text-shadow 0.2s;
+}
+.liveLink:hover {
+    text-shadow: 0 0 8px var(--color2);
+}
+.muted {
+    color: var(--nodeFilled);
+    font-size: 0.85rem;
+}
+.credit {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    font-weight: 400;
+}
+
+@media screen and (max-width: 650px) {
+    .grid {
+        gap: 1rem;
+    }
+}

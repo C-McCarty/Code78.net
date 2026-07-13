@@ -1,0 +1,32 @@
+[
+    {
+        "title": "DesktopToolkit",
+        "status": "live",
+        "statusLabel": "Released",
+        "description": "A PowerToys-style utility suite for Windows. A single tray host supervises modular tools — multi-monitor layout, taskbar control, and animated wallpapers — installable on the fly from a plugin catalog.",
+        "stack": ["C#", ".NET 9", "WPF", "Win32 IPC"],
+        "url": "https://github.com/C-McCarty/DesktopToolkit",
+        "linkLabel": "view_source",
+        "credit": "Built by Cameron McCarty"
+    },
+    {
+        "title": "MergeChess",
+        "status": "live",
+        "statusLabel": "Playable",
+        "description": "An original puzzle game that fuses match-3 with chess. Merge pieces up the promotion ladder, defend your kings from check, and clear the board across multiple game modes.",
+        "stack": ["JavaScript", "HTML5", "Custom Audio", "Game Design"],
+        "url": "https://mergechess.mccarty.cam/",
+        "linkLabel": "play_game",
+        "credit": "Built by Cameron McCarty"
+    },
+    {
+        "title": "CouponBook",
+        "status": "wip",
+        "statusLabel": "In Development",
+        "description": "A multi-role coupon marketplace linking customers, vendors, and distributors. Secure Firebase sign-in, role-based dashboards, and a hardened, documented REST API. In active development.",
+        "stack": ["React", "Express", "PostgreSQL", "Firebase Auth", "REST API"],
+        "url": null,
+        "linkLabel": "view_project",
+        "credit": null
+    }
+]
